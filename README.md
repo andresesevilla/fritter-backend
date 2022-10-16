@@ -1,6 +1,6 @@
 # Fritter
 
-Build your own not-quite-[Twitter](https://twitter.com/)!
+Backend for Fritter assignment in MIT 6.1040.
 
 ## Starter Code
 
