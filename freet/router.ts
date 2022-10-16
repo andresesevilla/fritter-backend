@@ -27,6 +27,9 @@ const router = express.Router();
  */
 router.get(
   '/',
+  [
+    userValidator.isUserLoggedIn
+  ],
   async (req: Request, res: Response, next: NextFunction) => {
     // Check if authorId query parameter was supplied
     if (req.query.author !== undefined) {
