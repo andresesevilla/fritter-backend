@@ -1,4 +1,4 @@
-import type {NextFunction, Request, Response} from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import express from 'express';
 import FreetCollection from './collection';
 import * as userValidator from '../user/middleware';
@@ -132,4 +132,25 @@ router.delete(
   }
 );
 
-export {router as freetRouter};
+/**
+ * Report a freet
+ *
+ * @name PUT /api/freets/:id
+ */
+router.patch(
+  '/:freetId?',
+  [
+    userValidator.isUserLoggedIn,
+    freetValidator.isFreetExists,
+    freetValidator.isValidAnxietyReport
+  ],
+  async (req: Request, res: Response) => {
+    const freet = await FreetCollection.reportOne(req.params.freetId, req.body.reason);
+    res.status(200).json({
+      message: 'Freet was reported successfully',
+      freet: util.constructFreetResponse(freet)
+    });
+  }
+);
+
+export { router as freetRouter };

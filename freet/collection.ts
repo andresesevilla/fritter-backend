@@ -95,7 +95,7 @@ class FreetCollection {
     const result = [];
     for (const freet of allFreets) {
       const accessGranted = await this.checkAccess(userId, freet);
-      if (accessGranted){
+      if (accessGranted) {
         result.push(freet);
       }
     }
@@ -114,7 +114,7 @@ class FreetCollection {
     const result = [];
     for (const freet of freets) {
       const accessGranted = await this.checkAccess(userId, freet);
-      if (accessGranted){
+      if (accessGranted) {
         result.push(freet);
       }
     }
@@ -146,7 +146,7 @@ class FreetCollection {
     const result = [];
     for (const freet of freets) {
       const accessGranted = await this.checkAccess(userId, freet);
-      if (accessGranted){
+      if (accessGranted) {
         result.push(freet);
       }
     }
@@ -171,6 +171,24 @@ class FreetCollection {
    */
   static async deleteMany(privateCircle: string): Promise<void> {
     await FreetModel.deleteMany({ privateCircle });
+  }
+
+  /**
+   * Report a freet with given reason
+   *
+   * @param {string} freetId - The id of the freet to be reported
+   * @param {string} reason - The report reason
+   * @return {Promise<HydratedDocument<Freet>>} - The newly updated freet
+   */
+  static async reportOne(freetId: Types.ObjectId | string, reason: string): Promise<HydratedDocument<Freet>> {
+    const freet = await FreetModel.findOne({ _id: freetId });
+    const anxietyReasons = freet.anxietyReasons;
+    if (!anxietyReasons.includes(reason)) {
+      anxietyReasons.push(reason);
+    }
+    freet.anxietyReasons = anxietyReasons;
+    freet.save();
+    return freet.populate('authorId');
   }
 }
 
