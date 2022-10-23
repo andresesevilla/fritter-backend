@@ -29,18 +29,6 @@ class FollowCollection {
   }
 
   /**
-   * Delete a follow
-   *
-   * @param {string} followerId - The id of the follower
-   * @param {string} followeeId - The id of the followee
-   * @return {Promise<HydratedDocument<Follow>>} - true if deleted, false otherwise
-   */
-  static async deleteOne(followerId: Types.ObjectId | string, followeeId: Types.ObjectId | string): Promise<Boolean> {
-    const follow = await FollowModel.deleteOne({followerId: followerId, followeeId: followeeId})
-    return follow != null;
-  }
-
-  /**
    * Get a user's following
    *
    * @param {string} username - User whose following we are looking up
@@ -75,8 +63,27 @@ class FollowCollection {
     return FollowModel.findOne({ followeeId: followeeUser._id, followerId: followerUser._id }).populate(['followerId', 'followeeId']);
   }
 
+  /**
+   * Delete a follow
+   *
+   * @param {string} followerId - The id of the follower
+   * @param {string} followeeId - The id of the followee
+   * @return {Promise<HydratedDocument<Follow>>} - true if deleted, false otherwise
+   */
+  static async deleteOne(followerId: Types.ObjectId | string, followeeId: Types.ObjectId | string): Promise<Boolean> {
+    const follow = await FollowModel.deleteOne({ followerId: followerId, followeeId: followeeId })
+    return follow != null;
+  }
 
-
+  /**
+   * Delete all follows associated with a given user
+   *
+   * @param {string} userId - The id of the user
+   */
+  static async deleteMany(userId: Types.ObjectId | string): Promise<void> {
+    await FollowModel.deleteMany({ followerId: userId });
+    await FollowModel.deleteMany({ followeeId: userId });
+  }
 }
 
 export default FollowCollection;
