@@ -63,10 +63,16 @@ const isValidFreetModifier = async (req: Request, res: Response, next: NextFunct
  * Checks if valid report reason
  */
 const isValidAnxietyReport = async (req: Request, res: Response, next: NextFunction) => {
-  const report = req.body.reason;
-  if (!report.trim()) {
+  const reason = req.body.reason;
+  const valid_report_reasons = [
+    'mass_casualty_event',
+    'disaster',
+    'sexual_violence',
+    'other_anxiety'
+  ]
+  if (!valid_report_reasons.includes(reason)) {
     res.status(400).json({
-      error: 'Anxiety Report reason must be at least one character long.'
+      error: 'Anxiety Report reason must be one of the predefined options.'
     });
     return;
   }
