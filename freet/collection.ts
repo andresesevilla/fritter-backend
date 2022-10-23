@@ -80,6 +80,10 @@ class FreetCollection {
       return {authorId: followee};
     })
 
+    if (followingUsernames.length === 0) {
+      return [];
+    }
+
     return FreetModel.find({ $or:followingUsernames }).sort({ dateCreated: -1 }).populate('authorId');
   }
 
