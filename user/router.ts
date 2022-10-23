@@ -135,29 +135,4 @@ router.put(
   }
 );
 
-/**
- * Delete a user.
- *
- * @name DELETE /api/users
- *
- * @return {string} - A success message
- * @throws {403} - If the user is not logged in
- */
-router.delete(
-  '/',
-  [
-    userValidator.isUserLoggedIn
-  ],
-  async (req: Request, res: Response) => {
-    const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
-    await UserCollection.deleteOne(userId);
-    await FreetCollection.deleteMany(userId);
-    await FollowCollection.deleteMany(userId);
-    req.session.userId = undefined;
-    res.status(200).json({
-      message: 'Your account has been deleted successfully.'
-    });
-  }
-);
-
 export {router as userRouter};

@@ -15,12 +15,6 @@ function changePassword(fields) {
     .catch(showResponse);
 }
 
-function deleteUser(fields) {
-  fetch('/api/users', {method: 'DELETE'})
-    .then(showResponse)
-    .catch(showResponse);
-}
-
 function signIn(fields) {
   fetch('/api/users/session', {method: 'POST', body: JSON.stringify(fields), headers: {'Content-Type': 'application/json'}})
     .then(showResponse)

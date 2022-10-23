@@ -80,17 +80,6 @@ class UserCollection {
     await user.save();
     return user;
   }
-
-  /**
-   * Delete a user from the collection.
-   *
-   * @param {string} userId - The userId of user to delete
-   * @return {Promise<Boolean>} - true if the user has been deleted, false otherwise
-   */
-  static async deleteOne(userId: Types.ObjectId | string): Promise<boolean> {
-    const user = await UserModel.deleteOne({_id: userId});
-    return user !== null;
-  }
 }
 
 export default UserCollection;

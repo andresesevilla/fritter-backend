@@ -29,7 +29,6 @@ function showResponse(response) {
 // Map form (by id) to the function that should be called on submit
 const formsAndHandlers = {
   'create-user': createUser,
-  'delete-user': deleteUser,
   'change-password': changePassword,
   'sign-in': signIn,
   'sign-out': signOut,
