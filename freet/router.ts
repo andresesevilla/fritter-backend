@@ -27,6 +27,9 @@ const router = express.Router();
  */
 router.get(
   '/',
+  [
+    userValidator.isUserLoggedIn,
+  ],
   async (req: Request, res: Response, next: NextFunction) => {
     // Check if authorId query parameter was supplied
     if (req.query.author !== undefined) {
@@ -34,9 +37,17 @@ router.get(
       return;
     }
 
-    const allFreets = await FreetCollection.findAll();
-    const response = allFreets.map(util.constructFreetResponse);
-    res.status(200).json(response);
+    // Check if feed query parameter was supplied
+    if (req.query.feed !== undefined) {
+      const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+      const feedFreets = await FreetCollection.findAllInFeed(userId);
+      const response = feedFreets.map(util.constructFreetResponse);
+      res.status(200).json(response);
+    } else {
+      const allFreets = await FreetCollection.findAll();
+      const response = allFreets.map(util.constructFreetResponse);
+      res.status(200).json(response);
+    }
   },
   [
     userValidator.isAuthorExists

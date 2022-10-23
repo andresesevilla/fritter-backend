@@ -1,7 +1,9 @@
-import type {HydratedDocument, Types} from 'mongoose';
-import type {Freet} from './model';
+import type { HydratedDocument, Types } from 'mongoose';
+import type { Freet } from './model';
 import FreetModel from './model';
 import UserCollection from '../user/collection';
+import FollowCollection from '../follow/collection';
+import type {Follow, PopulatedFollow} from '../follow/model';
 
 /**
  * This files contains a class that has the functionality to explore freets
@@ -37,7 +39,7 @@ class FreetCollection {
    * @return {Promise<HydratedDocument<Freet>> | Promise<null> } - The freet with the given freetId, if any
    */
   static async findOne(freetId: Types.ObjectId | string): Promise<HydratedDocument<Freet>> {
-    return FreetModel.findOne({_id: freetId}).populate('authorId');
+    return FreetModel.findOne({ _id: freetId }).populate('authorId');
   }
 
   /**
@@ -47,7 +49,7 @@ class FreetCollection {
    */
   static async findAll(): Promise<Array<HydratedDocument<Freet>>> {
     // Retrieves freets and sorts them from most to least recent
-    return FreetModel.find({}).sort({dateCreated: -1}).populate('authorId');
+    return FreetModel.find({}).sort({ dateCreated: -1 }).populate('authorId');
   }
 
   /**
@@ -58,7 +60,34 @@ class FreetCollection {
    */
   static async findAllByUsername(username: string): Promise<Array<HydratedDocument<Freet>>> {
     const author = await UserCollection.findOneByUsername(username);
-    return FreetModel.find({authorId: author._id}).populate('authorId');
+    return FreetModel.find({ authorId: author._id }).populate('authorId');
+  }
+
+  /**
+   * Get all freets written by an author followed by user
+   *
+   * @param {string} userId - The username of the user
+   * @return {Promise<HydratedDocument<Freet>[]>} - An array of all of the freets made by followed users
+   */
+  static async findAllInFeed(userId: string): Promise<Array<HydratedDocument<Freet>>> {
+    // Get all of the users that this user follows
+    const user = await UserCollection.findOneByUserId(userId);
+    const following = await FollowCollection.findAllFollowingByUsername(user.username);
+
+    const followingUsernames = following.map(follow => {
+      const followCopy: PopulatedFollow = {...follow.toObject()};
+      const {username: followee} = followCopy.followeeId;
+      return followee;
+    })
+
+    const feed:Array<HydratedDocument<Freet>> = [];
+
+    for (const username of followingUsernames) {
+      const freetsFromThisUser = await FreetCollection.findAllByUsername(username);
+      feed.push(...freetsFromThisUser)
+    }
+
+    return feed;
   }
 
   /**
@@ -68,7 +97,7 @@ class FreetCollection {
    * @return {Promise<Boolean>} - true if the freet has been deleted, false otherwise
    */
   static async deleteOne(freetId: Types.ObjectId | string): Promise<boolean> {
-    const freet = await FreetModel.deleteOne({_id: freetId});
+    const freet = await FreetModel.deleteOne({ _id: freetId });
     return freet !== null;
   }
 
@@ -78,7 +107,7 @@ class FreetCollection {
    * @param {string} authorId - The id of author of freets
    */
   static async deleteMany(authorId: Types.ObjectId | string): Promise<void> {
-    await FreetModel.deleteMany({authorId});
+    await FreetModel.deleteMany({ authorId });
   }
 }
 

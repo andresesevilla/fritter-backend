@@ -11,6 +11,12 @@ function viewAllFreets(fields) {
     .catch(showResponse);
 }
 
+function viewFreetsFeed(fields) {
+  fetch('/api/freets?feed')
+    .then(showResponse)
+    .catch(showResponse);
+}
+
 function viewFreetsByAuthor(fields) {
   fetch(`/api/freets?author=${fields.author}`)
     .then(showResponse)
