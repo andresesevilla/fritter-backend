@@ -42,7 +42,10 @@ const formsAndHandlers = {
   'view-follows-by-follower' : viewFollowsByFollower,
   'view-follows-by-followee' : viewFollowsByFollowee,
   'view-follow-by-usernames' : viewFollowByUsernames,
-  'create-private-circle': createPrivateCircle
+  'create-private-circle': createPrivateCircle,
+  'delete-private-circle': deletePrivateCircle,
+  'view-private-circle': viewPrivateCircle,
+  'view-private-circles': viewPrivateCircles
 };
 
 // Attach handlers to forms

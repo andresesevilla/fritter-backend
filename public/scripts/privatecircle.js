@@ -3,3 +3,21 @@ function createPrivateCircle(fields) {
         .then(showResponse)
         .catch(showResponse);
 }
+
+function deletePrivateCircle(fields) {
+    fetch(`/api/privatecircles/${fields.name}`, { method: 'DELETE' })
+        .then(showResponse)
+        .catch(showResponse);
+}
+
+function viewPrivateCircle(fields) {
+    fetch(`/api/privatecircles/${fields.name}`)
+        .then(showResponse)
+        .catch(showResponse);
+}
+
+function viewPrivateCircles(fields) {
+    fetch(`/api/privatecircles`)
+        .then(showResponse)
+        .catch(showResponse);
+}

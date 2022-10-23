@@ -28,6 +28,40 @@ class PrivateCircleCollection {
     await privateCircle.save(); // Saves freet to MongoDB
     return privateCircle.populate('ownerId');
   }
+
+  /**
+   * Get a user's private circles
+   *
+   * @param {string} userId - User whose private circles we are looking up
+   * @return {Promise<HydratedDocument<PrivateCircle>[]>} - An array of all of the private circles
+   */
+  static async findAllPrivateCirclesByUsername(userId: string): Promise<Array<HydratedDocument<PrivateCircle>>> {
+    const user = await UserCollection.findOneByUserId(userId);
+    return PrivateCircleModel.find({ ownerId: user._id }).populate(['ownerId']);
+  }
+
+  /**
+   * Get a specific private circle
+   *
+   * @param {string} userId - owner of the private circle
+   * @param {string} name - name of the private circle
+   * @return {Promise<HydratedDocument<PrivateCircle>[]>} - The private circle
+   */
+  static async findPrivateCircleByOwnerAndName(userId: string, name: string): Promise<HydratedDocument<PrivateCircle>> {
+    const user = await UserCollection.findOneByUserId(userId);
+    return PrivateCircleModel.findOne({ ownerId: user._id, name: name }).populate(['ownerId']);
+  }
+
+  /**
+   * Delete a specific private circle
+   *
+   * @param {string} userId - owner of the private circle
+   * @param {string} name - name of the private circle
+   */
+  static async deletePrivateCircleByOwnerAndName(userId: string, name: string): Promise<void> {
+    const user = await UserCollection.findOneByUserId(userId);
+    await PrivateCircleModel.deleteOne({ ownerId: user._id, name: name });
+  }
 }
 
 export default PrivateCircleCollection;
