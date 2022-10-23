@@ -80,8 +80,27 @@ const isValidCreatePrivateCircle = async (req: Request, res: Response, next: Nex
     next();
 };
 
+/**
+ * Checks if this is a valid Private Circle update
+ */
+ const isExistingPrivateCircle = async (req: Request, res: Response, next: NextFunction) => {
+    const name = req.body.private_circle;
+    const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+    const privateCircle = await PrivateCircleCollection.findPrivateCircleByOwnerAndName(userId, name);
+    if (!privateCircle) {
+        res.status(404).json({
+            error: {
+                privateCircleExists: `Private Circle with name ${name} does not exist.`
+            }
+        });
+        return;
+    }
+    next();
+};
+
 export {
     isValidCreatePrivateCircle,
     isValidDeletePrivateCircle,
-    isValidUpdatePrivateCircle
+    isValidUpdatePrivateCircle,
+    isExistingPrivateCircle
 };

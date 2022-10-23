@@ -3,6 +3,7 @@ import express from 'express';
 import FreetCollection from './collection';
 import * as userValidator from '../user/middleware';
 import * as freetValidator from '../freet/middleware';
+import * as privateCircleValidator from '../privatecircle/middleware';
 import * as util from './util';
 
 const router = express.Router();
@@ -76,10 +77,26 @@ router.post(
     userValidator.isUserLoggedIn,
     freetValidator.isValidFreetContent
   ],
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response, next: NextFunction) => {
+    // Check if Private Circle name was supplied
+    if (req.body.private_circle) {
+      next();
+      return;
+    }
     const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
     const freet = await FreetCollection.addOne(userId, req.body.content);
-
+    res.status(201).json({
+      message: 'Your freet was created successfully.',
+      freet: util.constructFreetResponse(freet)
+    });
+  },
+  [
+    privateCircleValidator.isExistingPrivateCircle
+  ],
+  async (req: Request, res: Response) => {
+    const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+    const privateCircle = req.body.private_circle;
+    const freet = await FreetCollection.addOneWithPrivateCircle(userId, req.body.content, privateCircle);
     res.status(201).json({
       message: 'Your freet was created successfully.',
       freet: util.constructFreetResponse(freet)

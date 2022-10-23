@@ -33,6 +33,26 @@ class FreetCollection {
   }
 
   /**
+   * Add a freet to the collection with Private Circle
+   *
+   * @param {string} authorId - The id of the author of the freet
+   * @param {string} content - The id of the content of the freet
+   * @param {string} privateCircle - The name of the private circle of the freet
+   * @return {Promise<HydratedDocument<Freet>>} - The newly created freet
+   */
+     static async addOneWithPrivateCircle(authorId: Types.ObjectId | string, content: string, privateCircle: string): Promise<HydratedDocument<Freet>> {
+      const date = new Date();
+      const freet = new FreetModel({
+        authorId,
+        dateCreated: date,
+        content,
+        privateCircle
+      });
+      await freet.save(); // Saves freet to MongoDB
+      return freet.populate('authorId');
+    }
+
+  /**
    * Find a freet by freetId
    *
    * @param {string} freetId - The id of the freet to find

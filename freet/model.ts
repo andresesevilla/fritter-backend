@@ -13,6 +13,7 @@ export type Freet = {
   authorId: Types.ObjectId;
   dateCreated: Date;
   content: string;
+  privateCircle: string;
 };
 
 export type PopulatedFreet = {
@@ -20,6 +21,7 @@ export type PopulatedFreet = {
   authorId: User;
   dateCreated: Date;
   content: string;
+  privateCircle: string;
 };
 
 // Mongoose schema definition for interfacing with a MongoDB table
@@ -43,6 +45,10 @@ const FreetSchema = new Schema<Freet>({
     type: String,
     required: true
   },
+  privateCircle: {
+    type: String,
+    required: false
+  }
 });
 
 const FreetModel = model<Freet>('Freet', FreetSchema);
