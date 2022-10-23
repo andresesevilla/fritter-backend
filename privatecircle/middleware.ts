@@ -1,4 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
+import FollowCollection from '../follow/collection';
 import { Types } from 'mongoose';
 import UserCollection from '../user/collection';
 import PrivateCircleCollection from './collection';
@@ -69,10 +70,12 @@ const isValidCreatePrivateCircle = async (req: Request, res: Response, next: Nex
         });
         return;
     }
-    if (userToUpdate.id === userId) {
+    const user = await UserCollection.findOneByUserId(userId);
+    const follow = await FollowCollection.findOneFollowByUsernames(req.body.username, user.username)
+    if (!follow) {
         res.status(400).json({
             error: {
-                yourselfInCircle: `You cannot have yourself in your own Private Circle.`
+                yourselfInCircle: `People in your Private Circle must follow you.`
             }
         });
         return;
