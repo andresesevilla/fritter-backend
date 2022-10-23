@@ -76,6 +76,7 @@ router.post(
 router.get(
   '/',
   [
+    userValidator.isUserLoggedIn,
     followValidator.isValidFollowLookup
   ],
   async (req: Request, res: Response) => {
