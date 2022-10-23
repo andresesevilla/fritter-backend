@@ -14,6 +14,7 @@ export type Freet = {
   dateCreated: Date;
   content: string;
   privateCircle: string;
+  anxietyReasons: Array<string>;
 };
 
 export type PopulatedFreet = {
@@ -22,6 +23,7 @@ export type PopulatedFreet = {
   dateCreated: Date;
   content: string;
   privateCircle: string;
+  anxietyReasons: Array<string>;
 };
 
 // Mongoose schema definition for interfacing with a MongoDB table
@@ -48,6 +50,12 @@ const FreetSchema = new Schema<Freet>({
   privateCircle: {
     type: String,
     required: false
+  },
+  anxietyReasons: {
+    type: [
+      {type: String}
+    ],
+    required: true
   }
 });
 
