@@ -38,8 +38,10 @@ const formsAndHandlers = {
   'create-freet': createFreet,
   'delete-freet': deleteFreet,
   'create-follow': createFollow,
+  'delete-follow': deleteFollow,
   'view-follows-by-follower' : viewFollowsByFollower,
-  'view-follows-by-followee' : viewFollowsByFollowee
+  'view-follows-by-followee' : viewFollowsByFollowee,
+  'view-follow-by-usernames' : viewFollowByUsernames
 };
 
 // Attach handlers to forms

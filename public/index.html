@@ -107,6 +107,15 @@
           <input type="submit" value="Create Follow">
         </form>
 
+        <form id="delete-follow">
+          <h3>Unfollow User</h3>
+          <div>
+            <label for="username">Username:</label>
+            <input id="username" name="username">
+          </div>
+          <input type="submit" value="Delete Follow">
+        </form>
+
         <form id="view-follows-by-follower">
           <h3>View Following of User</h3>
           <div>
@@ -123,6 +132,19 @@
             <input id="username" name="username">
           </div>
           <input type="submit" value="View Follows By Followee">
+        </form>
+
+        <form id="view-follow-by-usernames">
+          <h3>Check if one user follows another</h3>
+          <div>
+            <label for="follower_username">Username of follower:</label>
+            <input id="follower_username" name="follower_username">
+          </div>
+          <div>
+            <label for="followee_username">Username of followee:</label>
+            <input id="followee_username" name="followee_username">
+          </div>
+          <input type="submit" value="View Follow By Usernames">
         </form>
         
       </div>

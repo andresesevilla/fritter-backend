@@ -2,7 +2,7 @@ import type { NextFunction, Request, Response } from 'express';
 import express from 'express';
 import FollowCollection from './collection';
 import * as userValidator from '../user/middleware';
-// import * as freetValidator from '../freet/middleware';
+import * as followValidator from './middleware';
 import * as util from './util';
 import UserCollection from '../user/collection';
 
@@ -20,6 +20,7 @@ router.post(
   '/',
   [
     userValidator.isUserLoggedIn,
+    followValidator.isValidFollow
   ],
   async (req: Request, res: Response) => {
     const follower = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
@@ -29,6 +30,35 @@ router.post(
       message: 'Your follow was created successfully.',
       follow: util.constructFollowResponse(follow)
     });
+  }
+);
+
+/**
+ * Delete a follow.
+ *
+ * @name DELETE /api/follows
+ *
+ * @return {FollowResponse} - The deleted follow
+ * @throws {403} - If the user is not logged in
+ */
+ router.delete(
+  '/',
+  [
+    userValidator.isUserLoggedIn
+  ],
+  async (req: Request, res: Response) => {
+    const follower = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+    const followee = await UserCollection.findOneByUsername(req.body.username);
+
+    if (FollowCollection.deleteOne(follower, followee.id)) {
+      res.status(201).json({
+        message: 'Your follow was deleted successfully',
+      });
+    } else {
+      res.status(400).json({
+        message: 'Your follow was not deleted',
+      });
+    }
   }
 );
 
@@ -45,14 +75,23 @@ router.post(
 router.get(
   '/',
   async (req: Request, res: Response) => {
-
-    if (req.query.followerId) {
-      const userFollowing = await FollowCollection.findAllFollowingByUsername(req.query.followerId as string);
-      const response = userFollowing.map(util.constructFollowResponse);
+    if (req.query.followerId && req.query.followeeId) {
+      const follow = await FollowCollection.findOneFollowByUsernames(req.query.followerId as string, req.query.followeeId as string);
+      if (!follow) {
+        res.status(200).json({
+          message: 'This follow does not exist',
+        });
+      } else {
+        const response = util.constructFollowResponse(follow);
+        res.status(200).json(response);
+      }
+    } else if (req.query.followerId) {
+      const user = await FollowCollection.findAllFollowingByUsername(req.query.followerId as string);
+      const response = user.map(util.constructFollowResponse);
       res.status(200).json(response);
     } else if (req.query.followeeId) {
-      const userFollowing = await FollowCollection.findAllFollowersByUsername(req.query.followeeId as string);
-      const response = userFollowing.map(util.constructFollowResponse);
+      const user = await FollowCollection.findAllFollowersByUsername(req.query.followeeId as string);
+      const response = user.map(util.constructFollowResponse);
       res.status(200).json(response);
     } else {
       res.status(400).json({
@@ -63,32 +102,5 @@ router.get(
     }
   }
 );
-
-
-//
-// /**
-//  * Delete a freet
-//  *
-//  * @name DELETE /api/freets/:id
-//  *
-//  * @return {string} - A success message
-//  * @throws {403} - If the user is not logged in or is not the author of
-//  *                 the freet
-//  * @throws {404} - If the freetId is not valid
-//  */
-// router.delete(
-//   '/:freetId?',
-//   [
-//     userValidator.isUserLoggedIn,
-//     freetValidator.isFreetExists,
-//     freetValidator.isValidFreetModifier
-//   ],
-//   async (req: Request, res: Response) => {
-//     await FreetCollection.deleteOne(req.params.freetId);
-//     res.status(200).json({
-//       message: 'Your freet was deleted successfully.'
-//     });
-//   }
-// );
 
 export { router as followRouter };
