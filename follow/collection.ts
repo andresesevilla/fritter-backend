@@ -1,5 +1,5 @@
-import type {HydratedDocument, Types} from 'mongoose';
-import type {Follow} from './model';
+import type { HydratedDocument, Types } from 'mongoose';
+import type { Follow } from './model';
 import FollowModel from './model';
 import UserCollection from '../user/collection';
 
@@ -34,40 +34,51 @@ class FollowCollection {
    * @param {string} username - User whose following we are looking up
    * @return {Promise<HydratedDocument<Follow>[]>} - An array of all of the follows
    */
-  static async findAllByUsername(username: string): Promise<Array<HydratedDocument<Follow>>> {
+  static async findAllFollowingByUsername(username: string): Promise<Array<HydratedDocument<Follow>>> {
     const user = await UserCollection.findOneByUsername(username);
-    return FollowModel.find({followerId: user._id}).populate(['followerId', 'followeeId']);
+    return FollowModel.find({ followerId: user._id }).populate(['followerId', 'followeeId']);
   }
 
-//   /**
-//    * Find a follow by followId
-//    *
-//    * @param {string} followId - The id of the follow to find
-//    * @return {Promise<HydratedDocument<Follow>> | Promise<null> } - The follow with the given followId, if any
-//    */
-//   static async findOne(followId: Types.ObjectId | string): Promise<HydratedDocument<Follow>> {
-//     return FollowModel.findOne({_id: followId}).populate('authorId');
-//   }
+  /**
+   * Get a user's followers
+   *
+   * @param {string} username - User whose followers we are looking up
+   * @return {Promise<HydratedDocument<Follow>[]>} - An array of all of the follows
+   */
+  static async findAllFollowersByUsername(username: string): Promise<Array<HydratedDocument<Follow>>> {
+    const user = await UserCollection.findOneByUsername(username);
+    return FollowModel.find({ followeeId: user._id }).populate(['followerId', 'followeeId']);
+  }
 
-//   /**
-//    * Delete a follow with given followId.
-//    *
-//    * @param {string} followId - The followId of follow to delete
-//    * @return {Promise<Boolean>} - true if the follow has been deleted, false otherwise
-//    */
-//   static async deleteOne(followId: Types.ObjectId | string): Promise<boolean> {
-//     const follow = await FollowModel.deleteOne({_id: followId});
-//     return follow !== null;
-//   }
+  //   /**
+  //    * Find a follow by followId
+  //    *
+  //    * @param {string} followId - The id of the follow to find
+  //    * @return {Promise<HydratedDocument<Follow>> | Promise<null> } - The follow with the given followId, if any
+  //    */
+  //   static async findOne(followId: Types.ObjectId | string): Promise<HydratedDocument<Follow>> {
+  //     return FollowModel.findOne({_id: followId}).populate('authorId');
+  //   }
 
-//   /**
-//    * Delete all the follows by the given author
-//    *
-//    * @param {string} authorId - The id of author of follows
-//    */
-//   static async deleteMany(authorId: Types.ObjectId | string): Promise<void> {
-//     await FollowModel.deleteMany({authorId});
-//   }
+  //   /**
+  //    * Delete a follow with given followId.
+  //    *
+  //    * @param {string} followId - The followId of follow to delete
+  //    * @return {Promise<Boolean>} - true if the follow has been deleted, false otherwise
+  //    */
+  //   static async deleteOne(followId: Types.ObjectId | string): Promise<boolean> {
+  //     const follow = await FollowModel.deleteOne({_id: followId});
+  //     return follow !== null;
+  //   }
+
+  //   /**
+  //    * Delete all the follows by the given author
+  //    *
+  //    * @param {string} authorId - The id of author of follows
+  //    */
+  //   static async deleteMany(authorId: Types.ObjectId | string): Promise<void> {
+  //     await FollowModel.deleteMany({authorId});
+  //   }
 }
 
 export default FollowCollection;

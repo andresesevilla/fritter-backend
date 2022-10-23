@@ -1,4 +1,4 @@
-import type {NextFunction, Request, Response} from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import express from 'express';
 import FollowCollection from './collection';
 import * as userValidator from '../user/middleware';
@@ -45,9 +45,22 @@ router.post(
 router.get(
   '/',
   async (req: Request, res: Response) => {
-    const userFollowing = await FollowCollection.findAllByUsername(req.query.followerId as string);
-    const response = userFollowing.map(util.constructFollowResponse);
-    res.status(200).json(response);
+
+    if (req.query.followerId) {
+      const userFollowing = await FollowCollection.findAllFollowingByUsername(req.query.followerId as string);
+      const response = userFollowing.map(util.constructFollowResponse);
+      res.status(200).json(response);
+    } else if (req.query.followeeId) {
+      const userFollowing = await FollowCollection.findAllFollowersByUsername(req.query.followeeId as string);
+      const response = userFollowing.map(util.constructFollowResponse);
+      res.status(200).json(response);
+    } else {
+      res.status(400).json({
+        error: {
+          password: 'You may not request follows without a specific follower or followee'
+        }
+      });
+    }
   }
 );
 
@@ -78,4 +91,4 @@ router.get(
 //   }
 // );
 
-export {router as followRouter};
+export { router as followRouter };
