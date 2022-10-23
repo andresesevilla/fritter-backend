@@ -77,7 +77,7 @@ class PrivateCircleCollection {
     const privateCircle = await PrivateCircleModel.findOne({ ownerId: user._id, name: name })
     const members = privateCircle.members;
 
-    if (members.includes(username)){
+    if (members.includes(username)) {
       members.splice(members.indexOf(username))
     } else {
       members.push(username)
@@ -86,6 +86,25 @@ class PrivateCircleCollection {
     privateCircle.members = members;
     await privateCircle.save();
     return privateCircle.populate('ownerId');
+  }
+
+  /**
+   * Remove user from another user's private circles
+   *
+   * @param {string} userIdToRemove - the user to remove from private circles
+   * @param {string} userIdPrivateCirclesOwner - username of the user who owns the private circles
+   */
+  static async removeUserFromAnothersPrivateCircles(userIdToRemove: Types.ObjectId | string, userIdPrivateCirclesOwner: Types.ObjectId | string): Promise<void> {
+    const userToRemove = await UserCollection.findOneByUserId(userIdToRemove);
+    const userToRemoveUsername = userToRemove.username;
+    const privateCircles = await PrivateCircleModel.find({ ownerId: userIdPrivateCirclesOwner });
+    for (const privateCircle of privateCircles) {
+      const members = privateCircle.members;
+      if (members.includes(userToRemoveUsername)) {
+        members.splice(members.indexOf(userToRemoveUsername))
+      }
+      await privateCircle.save();
+    }
   }
 }
 

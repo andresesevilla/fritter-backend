@@ -2,6 +2,7 @@ import type { HydratedDocument, Types } from 'mongoose';
 import type { Follow } from './model';
 import FollowModel from './model';
 import UserCollection from '../user/collection';
+import PrivateCircleCollection from '../privatecircle/collection';
 
 /**
  * This files contains a class that has the functionality to explore follows
@@ -72,6 +73,7 @@ class FollowCollection {
    */
   static async deleteOne(followerId: Types.ObjectId | string, followeeId: Types.ObjectId | string): Promise<Boolean> {
     const follow = await FollowModel.deleteOne({ followerId: followerId, followeeId: followeeId })
+    await PrivateCircleCollection.removeUserFromAnothersPrivateCircles(followerId, followeeId);
     return follow != null;
   }
 }
