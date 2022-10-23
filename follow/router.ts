@@ -44,7 +44,8 @@ router.post(
  router.delete(
   '/',
   [
-    userValidator.isUserLoggedIn
+    userValidator.isUserLoggedIn,
+    followValidator.isValidUnfollow
   ],
   async (req: Request, res: Response) => {
     const follower = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
@@ -74,6 +75,9 @@ router.post(
  */
 router.get(
   '/',
+  [
+    followValidator.isValidFollowLookup
+  ],
   async (req: Request, res: Response) => {
     if (req.query.followerId && req.query.followeeId) {
       const follow = await FollowCollection.findOneFollowByUsernames(req.query.followerId as string, req.query.followeeId as string);
