@@ -48,7 +48,7 @@ class PrivateCircleCollection {
    * @param {string} name - name of the private circle
    * @return {Promise<HydratedDocument<PrivateCircle>[]>} - The private circle
    */
-  static async findPrivateCircleByOwnerAndName(userId: string, name: string): Promise<HydratedDocument<PrivateCircle>> {
+  static async findPrivateCircleByOwnerAndName(userId: Types.ObjectId | string, name: string): Promise<HydratedDocument<PrivateCircle>> {
     const user = await UserCollection.findOneByUserId(userId);
     return PrivateCircleModel.findOne({ ownerId: user._id, name: name }).populate(['ownerId']);
   }

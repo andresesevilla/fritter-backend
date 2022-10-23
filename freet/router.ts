@@ -5,6 +5,7 @@ import * as userValidator from '../user/middleware';
 import * as freetValidator from '../freet/middleware';
 import * as privateCircleValidator from '../privatecircle/middleware';
 import * as util from './util';
+import UserCollection from '../user/collection';
 
 const router = express.Router();
 
@@ -38,14 +39,15 @@ router.get(
       return;
     }
 
+    const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+
     // Check if feed query parameter was supplied
     if (req.query.feed !== undefined) {
-      const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
       const feedFreets = await FreetCollection.findAllInFeed(userId);
       const response = feedFreets.map(util.constructFreetResponse);
       res.status(200).json(response);
     } else {
-      const allFreets = await FreetCollection.findAll();
+      const allFreets = await FreetCollection.findAll(userId);
       const response = allFreets.map(util.constructFreetResponse);
       res.status(200).json(response);
     }

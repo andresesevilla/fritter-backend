@@ -3,7 +3,8 @@ import type { Freet } from './model';
 import FreetModel from './model';
 import UserCollection from '../user/collection';
 import FollowCollection from '../follow/collection';
-import type {Follow, PopulatedFollow} from '../follow/model';
+import type { Follow, PopulatedFollow } from '../follow/model';
+import PrivateCircleCollection from '../privatecircle/collection';
 
 /**
  * This files contains a class that has the functionality to explore freets
@@ -14,6 +15,27 @@ import type {Follow, PopulatedFollow} from '../follow/model';
  * and contains all the information in Freet. https://mongoosejs.com/docs/typescript.html
  */
 class FreetCollection {
+  /**
+   * Check if user has access to a freet by freetId
+   *
+   * @param {string} userId - The id of the user
+   * @param {string} freet - The id of the freet to check
+   * @return {Promise<Boolean>} - True if user has access, false otherwise
+   */
+  static async checkAccess(userId: Types.ObjectId | string, freet: Freet): Promise<Boolean> {
+    const privateCircleName = freet.privateCircle;
+    if (!privateCircleName) {
+      return true;
+    }
+    const privateCircle = await PrivateCircleCollection.findPrivateCircleByOwnerAndName(freet.authorId, privateCircleName);
+    if (privateCircle.ownerId._id.toString() === userId) {
+      return true;
+    }
+    const members = privateCircle.members;
+    const user = await UserCollection.findOneByUserId(userId);
+    return members.includes(user.username)
+  }
+
   /**
    * Add a freet to the collection
    *
@@ -40,17 +62,17 @@ class FreetCollection {
    * @param {string} privateCircle - The name of the private circle of the freet
    * @return {Promise<HydratedDocument<Freet>>} - The newly created freet
    */
-     static async addOneWithPrivateCircle(authorId: Types.ObjectId | string, content: string, privateCircle: string): Promise<HydratedDocument<Freet>> {
-      const date = new Date();
-      const freet = new FreetModel({
-        authorId,
-        dateCreated: date,
-        content,
-        privateCircle
-      });
-      await freet.save(); // Saves freet to MongoDB
-      return freet.populate('authorId');
-    }
+  static async addOneWithPrivateCircle(authorId: Types.ObjectId | string, content: string, privateCircle: string): Promise<HydratedDocument<Freet>> {
+    const date = new Date();
+    const freet = new FreetModel({
+      authorId,
+      dateCreated: date,
+      content,
+      privateCircle
+    });
+    await freet.save(); // Saves freet to MongoDB
+    return freet.populate('authorId');
+  }
 
   /**
    * Find a freet by freetId
@@ -67,9 +89,17 @@ class FreetCollection {
    *
    * @return {Promise<HydratedDocument<Freet>[]>} - An array of all of the freets
    */
-  static async findAll(): Promise<Array<HydratedDocument<Freet>>> {
+  static async findAll(userId: string): Promise<Array<HydratedDocument<Freet>>> {
     // Retrieves freets and sorts them from most to least recent
-    return FreetModel.find({}).sort({ dateCreated: -1 }).populate('authorId');
+    const allFreets = await FreetModel.find({}).sort({ dateCreated: -1 }).populate('authorId')
+    const result = [];
+    for (const freet of allFreets) {
+      const accessGranted = await this.checkAccess(userId, freet);
+      if (accessGranted){
+        result.push(freet);
+      }
+    }
+    return result;
   }
 
   /**
@@ -95,16 +125,16 @@ class FreetCollection {
     const following = await FollowCollection.findAllFollowingByUsername(user.username);
 
     const followingUsernames = following.map(follow => {
-      const followCopy: PopulatedFollow = {...follow.toObject()};
-      const {_id: followee} = followCopy.followeeId;
-      return {authorId: followee};
+      const followCopy: PopulatedFollow = { ...follow.toObject() };
+      const { _id: followee } = followCopy.followeeId;
+      return { authorId: followee };
     })
 
     if (followingUsernames.length === 0) {
       return [];
     }
 
-    return FreetModel.find({ $or:followingUsernames }).sort({ dateCreated: -1 }).populate('authorId');
+    return FreetModel.find({ $or: followingUsernames }).sort({ dateCreated: -1 }).populate('authorId');
   }
 
   /**
