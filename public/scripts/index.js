@@ -30,17 +30,15 @@ function showResponse(response) {
 const formsAndHandlers = {
   'create-user': createUser,
   'delete-user': deleteUser,
-  'change-username': changeUsername,
   'change-password': changePassword,
   'sign-in': signIn,
   'sign-out': signOut,
   'view-all-freets': viewAllFreets,
   'view-freets-by-author': viewFreetsByAuthor,
   'create-freet': createFreet,
-  'edit-freet': editFreet,
   'delete-freet': deleteFreet,
   'follow': follow,
-  'following': following
+  'following' : following
 };
 
 // Attach handlers to forms

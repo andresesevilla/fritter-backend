@@ -1,11 +1,11 @@
 function follow(fields) {
-  fetch('/api/follow', {method: 'POST', body: JSON.stringify(fields), headers: {'Content-Type': 'application/json'}})
+  fetch('/api/follows', {method: 'POST', body: JSON.stringify(fields), headers: {'Content-Type': 'application/json'}})
     .then(showResponse)
     .catch(showResponse);
 }
 
 function following(fields) {
-  fetch('/api/follow')
+  fetch(`/api/follows?followerId=${fields.username}`)
     .then(showResponse)
     .catch(showResponse);
 }

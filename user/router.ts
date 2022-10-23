@@ -116,6 +116,16 @@ router.put(
   ],
   async (req: Request, res: Response) => {
     const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+
+    if (req.body.username) {
+      res.status(400).json({
+        error: {
+          password: 'You may not change your username.'
+        }
+      });
+      return;
+    }
+
     const user = await UserCollection.updateOne(userId, req.body);
     res.status(200).json({
       message: 'Your profile was updated successfully.',

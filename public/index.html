@@ -20,6 +20,7 @@
     <section id="operations-container">
       <h2>Operations:</h2>
       <div class="scrollbox">
+
         <form id="create-user">
           <h3>Create User</h3>
           <div>
@@ -36,15 +37,6 @@
         <form id="delete-user">
           <h3>Delete User</h3>
           <input type="submit" value="Delete User">
-        </form>
-
-        <form id="change-username">
-          <h3>Change Username</h3>
-          <div>
-            <label for="username">New Username:</label>
-            <input id="username" name="username">
-          </div>
-          <input type="submit" value="Change Username">
         </form>
 
         <form id="change-password">
@@ -97,19 +89,6 @@
           <input type="submit" value="Create Freet">
         </form>
 
-        <form id="edit-freet">
-          <h3>Edit Freet</h3>
-          <div>
-            <label for="id">ID:</label>
-            <input id="id" name="id">
-          </div>
-          <div>
-            <label for="content">Content:</label>
-            <textarea id="content" name="content"></textarea>
-          </div>
-          <input type="submit" value="Edit Freet">
-        </form>
-
         <form id="delete-freet">
           <h3>Delete Freet</h3>
           <div>
@@ -122,17 +101,21 @@
         <form id="follow">
           <h3>Follow User</h3>
           <div>
-            <label for="user">User:</label>
-            <input id="user" name="user">
+            <label for="username">Username:</label>
+            <input id="username" name="username">
           </div>
           <input type="submit" value="Follow">
         </form>
 
         <form id="following">
-          <h3>View Following</h3>
-          <input type="submit" value="View Following">
+          <h3>View Following of User</h3>
+          <div>
+            <label for="username">Username:</label>
+            <input id="username" name="username">
+          </div>
+          <input type="submit" value="Following">
         </form>
-
+        
       </div>
     </section>
     <section>
