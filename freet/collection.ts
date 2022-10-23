@@ -76,18 +76,11 @@ class FreetCollection {
 
     const followingUsernames = following.map(follow => {
       const followCopy: PopulatedFollow = {...follow.toObject()};
-      const {username: followee} = followCopy.followeeId;
-      return followee;
+      const {_id: followee} = followCopy.followeeId;
+      return {authorId: followee};
     })
 
-    const feed:Array<HydratedDocument<Freet>> = [];
-
-    for (const username of followingUsernames) {
-      const freetsFromThisUser = await FreetCollection.findAllByUsername(username);
-      feed.push(...freetsFromThisUser)
-    }
-
-    return feed;
+    return FreetModel.find({ $or:followingUsernames }).sort({ dateCreated: -1 }).populate('authorId');
   }
 
   /**
