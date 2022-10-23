@@ -48,7 +48,6 @@ class PrivateCircleCollection {
    * @return {Promise<HydratedDocument<PrivateCircle>[]>} - The private circle
    */
   static async findPrivateCircleByOwnerAndName(userId: string, name: string): Promise<HydratedDocument<PrivateCircle>> {
-    console.log(`Searching with ${userId} and ${name}`)
     const user = await UserCollection.findOneByUserId(userId);
     return PrivateCircleModel.findOne({ ownerId: user._id, name: name }).populate(['ownerId']);
   }
@@ -72,12 +71,8 @@ class PrivateCircleCollection {
    * @param {string} username - username to be added or removed from private circle
    */
   static async updatePrivateCircle(userId: string, name: string, username: string): Promise<HydratedDocument<PrivateCircle>> {
-    console.log(`Searching with ${userId} and ${name}`)
     const user = await UserCollection.findOneByUserId(userId);
     const privateCircle = await PrivateCircleModel.findOne({ ownerId: user._id, name: name })
-
-    console.log(privateCircle);
-
     const members = privateCircle.members;
 
     if (members.includes(username)){

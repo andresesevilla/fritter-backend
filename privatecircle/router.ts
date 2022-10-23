@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from 'express';
 import express from 'express';
-import FreetCollection from './collection';
 import * as userValidator from '../user/middleware';
+import * as privateCircleValidator from './middleware';
 import * as util from './util';
 import PrivateCircleCollection from './collection';
 
@@ -20,6 +20,7 @@ router.post(
   '/',
   [
     userValidator.isUserLoggedIn,
+    privateCircleValidator.isValidCreatePrivateCircle
   ],
   async (req: Request, res: Response) => {
     const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
@@ -78,6 +79,14 @@ router.get(
     const user = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
     const name = req.params.privateCircle;
     const result = await PrivateCircleCollection.findPrivateCircleByOwnerAndName(user, name);
+    if (!result) {
+      res.status(404).json({
+        error: {
+            privateCircleExists: `Requested Private Circle does not exist.`
+        }
+    });
+    return;
+    }
     res.status(200).json({
       privateCircle: util.constructPrivateCircleResponse(result)
     });
@@ -98,6 +107,7 @@ router.delete(
   '/:privateCircle',
   [
     userValidator.isUserLoggedIn,
+    privateCircleValidator.isValidDeletePrivateCircle
   ],
   async (req: Request, res: Response) => {
     const user = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
@@ -122,6 +132,7 @@ router.delete(
   '/:privateCircle',
   [
     userValidator.isUserLoggedIn,
+    privateCircleValidator.isValidUpdatePrivateCircle
   ],
   async (req: Request, res: Response) => {
     const user = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
