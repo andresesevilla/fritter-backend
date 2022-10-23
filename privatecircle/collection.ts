@@ -2,6 +2,7 @@ import type { HydratedDocument, Types } from 'mongoose';
 import type { PrivateCircle } from './model';
 import UserCollection from '../user/collection';
 import PrivateCircleModel from './model';
+import FreetCollection from '../freet/collection';
 
 /**
  * This files contains a class that has the functionality to explore private circles
@@ -60,6 +61,7 @@ class PrivateCircleCollection {
    */
   static async deletePrivateCircleByOwnerAndName(userId: string, name: string): Promise<void> {
     const user = await UserCollection.findOneByUserId(userId);
+    await FreetCollection.deleteMany(name);
     await PrivateCircleModel.deleteOne({ ownerId: user._id, name: name });
   }
 

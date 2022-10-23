@@ -119,12 +119,12 @@ class FreetCollection {
   }
 
   /**
-   * Delete all the freets by the given author
+   * Delete all the freets by the given private circle
    *
-   * @param {string} authorId - The id of author of freets
+   * @param {string} privateCircle - The name of the private circle of freets
    */
-  static async deleteMany(authorId: Types.ObjectId | string): Promise<void> {
-    await FreetModel.deleteMany({ authorId });
+  static async deleteMany(privateCircle: string): Promise<void> {
+    await FreetModel.deleteMany({ privateCircle });
   }
 }
 
