@@ -21,3 +21,9 @@ function viewPrivateCircles(fields) {
         .then(showResponse)
         .catch(showResponse);
 }
+
+function updatePrivateCircle(fields) {
+    fetch(`/api/privatecircles/${fields.name}`, { method: 'PATCH', body: JSON.stringify(fields), headers: { 'Content-Type': 'application/json' }})
+        .then(showResponse)
+        .catch(showResponse);
+}

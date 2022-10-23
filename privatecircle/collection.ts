@@ -48,6 +48,7 @@ class PrivateCircleCollection {
    * @return {Promise<HydratedDocument<PrivateCircle>[]>} - The private circle
    */
   static async findPrivateCircleByOwnerAndName(userId: string, name: string): Promise<HydratedDocument<PrivateCircle>> {
+    console.log(`Searching with ${userId} and ${name}`)
     const user = await UserCollection.findOneByUserId(userId);
     return PrivateCircleModel.findOne({ ownerId: user._id, name: name }).populate(['ownerId']);
   }
@@ -61,6 +62,33 @@ class PrivateCircleCollection {
   static async deletePrivateCircleByOwnerAndName(userId: string, name: string): Promise<void> {
     const user = await UserCollection.findOneByUserId(userId);
     await PrivateCircleModel.deleteOne({ ownerId: user._id, name: name });
+  }
+
+  /**
+   * Update a specific private circle
+   *
+   * @param {string} userId - owner of the private circle
+   * @param {string} name - name of the private circle
+   * @param {string} username - username to be added or removed from private circle
+   */
+  static async updatePrivateCircle(userId: string, name: string, username: string): Promise<HydratedDocument<PrivateCircle>> {
+    console.log(`Searching with ${userId} and ${name}`)
+    const user = await UserCollection.findOneByUserId(userId);
+    const privateCircle = await PrivateCircleModel.findOne({ ownerId: user._id, name: name })
+
+    console.log(privateCircle);
+
+    const members = privateCircle.members;
+
+    if (members.includes(username)){
+      members.splice(members.indexOf(username))
+    } else {
+      members.push(username)
+    }
+
+    privateCircle.members = members;
+    await privateCircle.save();
+    return privateCircle.populate('ownerId');
   }
 }
 

@@ -45,7 +45,8 @@ const formsAndHandlers = {
   'create-private-circle': createPrivateCircle,
   'delete-private-circle': deletePrivateCircle,
   'view-private-circle': viewPrivateCircle,
-  'view-private-circles': viewPrivateCircles
+  'view-private-circles': viewPrivateCircles,
+  'toggle-user-in-private-circle': updatePrivateCircle
 };
 
 // Attach handlers to forms

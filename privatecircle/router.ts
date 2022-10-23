@@ -109,4 +109,30 @@ router.delete(
   }
 );
 
+/**
+ * Update a specific private circle of a user.
+ *
+ * @name PATCH /api/privatecircles/:privateCircle
+ *
+ * @throws {400} - If followerId is not given
+ * @throws {404} - If no user has given followerId
+ *
+ */
+ router.patch(
+  '/:privateCircle',
+  [
+    userValidator.isUserLoggedIn,
+  ],
+  async (req: Request, res: Response) => {
+    const user = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+    const name = req.params.privateCircle;
+    const username = req.body.username;
+    const result = await PrivateCircleCollection.updatePrivateCircle(user, name, username);
+    res.status(200).json({
+      message: "Private Circle Updated",
+      privateCircle: util.constructPrivateCircleResponse(result)
+    });
+  }
+);
+
 export { router as privateCircleRouter };
