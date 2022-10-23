@@ -42,7 +42,8 @@ const formsAndHandlers = {
   'delete-follow': deleteFollow,
   'view-follows-by-follower' : viewFollowsByFollower,
   'view-follows-by-followee' : viewFollowsByFollowee,
-  'view-follow-by-usernames' : viewFollowByUsernames
+  'view-follow-by-usernames' : viewFollowByUsernames,
+  'create-private-circle': createPrivateCircle
 };
 
 // Attach handlers to forms
