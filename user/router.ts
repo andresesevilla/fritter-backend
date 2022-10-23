@@ -1,4 +1,4 @@
-import type {Request, Response} from 'express';
+import type { Request, Response } from 'express';
 import express from 'express';
 import FreetCollection from '../freet/collection';
 import UserCollection from './collection';
@@ -96,6 +96,94 @@ router.post(
 );
 
 /**
+ * Toggle Anxiety Shield status of a user account.
+ *
+ * @name PUT /api/users/anxietyshield
+ *
+ */
+router.put(
+  '/anxietyshield',
+  [
+    userValidator.isUserLoggedIn,
+  ],
+  async (req: Request, res: Response) => {
+    const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+    const user = await UserCollection.findOneByUserId(userId);
+    user.anxietyShieldEnabled = !user.anxietyShieldEnabled;
+    user.save();
+
+    res.status(200).json({
+      message: `Anxiety Shield status updated to: ${user.anxietyShieldEnabled}`
+    });
+  }
+);
+
+/**
+ * Get Anxiety Shield status of a user account.
+ *
+ * @name GET /api/users/anxietyshield
+ *
+ */
+ router.get(
+  '/anxietyshield',
+  [
+    userValidator.isUserLoggedIn,
+  ],
+  async (req: Request, res: Response) => {
+    const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+    const user = await UserCollection.findOneByUserId(userId);
+
+    res.status(200).json({
+      message: `Anxiety Shield status is: ${user.anxietyShieldEnabled}`
+    });
+  }
+);
+
+/**
+ * Toggle Briefing Mode status of a user account.
+ *
+ * @name PUT /api/users/briefingmode
+ *
+ */
+ router.put(
+  '/briefingmode',
+  [
+    userValidator.isUserLoggedIn,
+  ],
+  async (req: Request, res: Response) => {
+    const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+    const user = await UserCollection.findOneByUserId(userId);
+    user.briefingModeEnabled = !user.briefingModeEnabled;
+    user.save();
+
+    res.status(200).json({
+      message: `Briefing Mode status updated to: ${user.briefingModeEnabled}`
+    });
+  }
+);
+
+/**
+ * Get Briefing Mode status of a user account.
+ *
+ * @name GET /api/users/briefingmode
+ *
+ */
+ router.get(
+  '/briefingmode',
+  [
+    userValidator.isUserLoggedIn,
+  ],
+  async (req: Request, res: Response) => {
+    const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+    const user = await UserCollection.findOneByUserId(userId);
+
+    res.status(200).json({
+      message: `Briefing Mode status is: ${user.briefingModeEnabled}`
+    });
+  }
+);
+
+/**
  * Update a user's profile.
  *
  * @name PUT /api/users
@@ -121,7 +209,7 @@ router.put(
     if (req.body.username) {
       res.status(400).json({
         error: {
-          password: 'You may not change your username.'
+          password: 'You may not change your username. No changes were made to your account.'
         }
       });
       return;
@@ -129,10 +217,10 @@ router.put(
 
     const user = await UserCollection.updateOne(userId, req.body);
     res.status(200).json({
-      message: 'Your profile was updated successfully.',
+      message: 'Your password was updated successfully.',
       user: util.constructUserResponse(user)
     });
   }
 );
 
-export {router as userRouter};
+export { router as userRouter };

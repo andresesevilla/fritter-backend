@@ -46,7 +46,11 @@ const formsAndHandlers = {
   'delete-private-circle': deletePrivateCircle,
   'view-private-circle': viewPrivateCircle,
   'view-private-circles': viewPrivateCircles,
-  'toggle-user-in-private-circle': updatePrivateCircle
+  'toggle-user-in-private-circle': updatePrivateCircle,
+  'view-anxiety-shield-status': viewAnxietyShieldStatus,
+  'toggle-anxiety-shield-status': toggleAnxietyShieldStatus,
+  'view-briefing-mode-status': viewBriefingModeStatus,
+  'toggle-briefing-mode-status': toggleBriefingModeStatus,
 };
 
 // Attach handlers to forms

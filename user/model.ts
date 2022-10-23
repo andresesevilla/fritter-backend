@@ -1,5 +1,5 @@
-import type {Types} from 'mongoose';
-import {Schema, model} from 'mongoose';
+import type { Types } from 'mongoose';
+import { Schema, model } from 'mongoose';
 
 /**
  * This file defines the properties stored in a User
@@ -12,6 +12,8 @@ export type User = {
   username: string;
   password: string;
   dateJoined: Date;
+  anxietyShieldEnabled: boolean;
+  briefingModeEnabled: boolean;
 };
 
 // Mongoose schema definition for interfacing with a MongoDB table
@@ -31,6 +33,16 @@ const UserSchema = new Schema({
   // The date the user joined
   dateJoined: {
     type: Date,
+    required: true
+  },
+  // Whether Anxiety Shield is enabled
+  anxietyShieldEnabled: {
+    type: Boolean,
+    required: true
+  },
+  // Whether Briefing Mode is enabled
+  briefingModeEnabled: {
+    type: Boolean,
     required: true
   }
 });
