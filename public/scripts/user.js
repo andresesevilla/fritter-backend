@@ -51,6 +51,12 @@ function toggleBriefingModeStatus() {
     .catch(showResponse);
 }
 
+function setBriefingSize(fields) {
+  fetch(`/api/users/briefingmode`, { method: 'PATCH', body: JSON.stringify(fields), headers: { 'Content-Type': 'application/json' } })
+    .then(showResponse)
+    .catch(showResponse);
+}
+
 function togglePersonalAnxietyReason(fields) {
   fetch(`/api/users/anxietyshield`, { method: 'PATCH', body: JSON.stringify(fields), headers: { 'Content-Type': 'application/json' } })
     .then(showResponse)

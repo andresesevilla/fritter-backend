@@ -1,5 +1,5 @@
-import type {Request, Response, NextFunction} from 'express';
-import {Types} from 'mongoose';
+import type { Request, Response, NextFunction } from 'express';
+import { Types } from 'mongoose';
 import UserCollection from '../user/collection';
 
 /**
@@ -63,10 +63,10 @@ const isValidPassword = (req: Request, res: Response, next: NextFunction) => {
  * Checks if a user with username and password in req.body exists
  */
 const isAccountExists = async (req: Request, res: Response, next: NextFunction) => {
-  const {username, password} = req.body as {username: string; password: string};
+  const { username, password } = req.body as { username: string; password: string };
 
   if (!username || !password) {
-    res.status(400).json({error: `Missing ${username ? 'password' : 'username'} credentials for sign in.`});
+    res.status(400).json({ error: `Missing ${username ? 'password' : 'username'} credentials for sign in.` });
     return;
   }
 
@@ -77,7 +77,7 @@ const isAccountExists = async (req: Request, res: Response, next: NextFunction) 
   if (user) {
     next();
   } else {
-    res.status(401).json({error: 'Invalid user login credentials provided.'});
+    res.status(401).json({ error: 'Invalid user login credentials provided.' });
   }
 };
 
@@ -153,6 +153,32 @@ const isAuthorExists = async (req: Request, res: Response, next: NextFunction) =
   next();
 };
 
+
+/**
+ * Checks if briefing size is valid
+ */
+const isValidBriefingSize = (req: Request, res: Response, next: NextFunction) => {
+  const briefingSizeRaw = req.body.size;
+  if (!briefingSizeRaw || isNaN(briefingSizeRaw)) {
+    res.status(400).json({
+      error: {
+        username: 'Nonempty, numeric briefing size must be supplied'
+      }
+    });
+    return;
+  }
+  const briefingSize = parseInt(briefingSizeRaw)
+  if (briefingSize < 5) {
+    res.status(400).json({
+      error: {
+        username: 'Briefing size must be greater than 5'
+      }
+    });
+    return;
+  }
+  next();
+};
+
 export {
   isCurrentSessionUserExists,
   isUserLoggedIn,
@@ -161,5 +187,6 @@ export {
   isAccountExists,
   isAuthorExists,
   isValidUsername,
-  isValidPassword
+  isValidPassword,
+  isValidBriefingSize
 };

@@ -135,7 +135,7 @@ router.put(
     const user = await UserCollection.findOneByUserId(userId);
 
     res.status(200).json({
-      message: `Anxiety Shield enable status is: ${user.anxietyShieldEnabled}`,
+      status: user.anxietyShieldEnabled,
       reasons: user.anxietyReasons
     });
   }
@@ -187,6 +187,32 @@ router.put(
 );
 
 /**
+ * Set briefing size of a user account.
+ *
+ * @name PATCH /api/users/briefingmode
+ *
+ */
+ router.patch(
+  '/briefingmode',
+  [
+    userValidator.isUserLoggedIn,
+    userValidator.isValidBriefingSize
+  ],
+  async (req: Request, res: Response) => {
+    const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+    const user = await UserCollection.findOneByUserId(userId);
+    const size = parseInt(req.body.size);
+
+    user.briefingSize = size;
+    user.save();
+
+    res.status(200).json({
+      message: `Briefing Mode size updated to: ${user.briefingSize}`
+    });
+  }
+);
+
+/**
  * Get Briefing Mode status of a user account.
  *
  * @name GET /api/users/briefingmode
@@ -202,7 +228,8 @@ router.put(
     const user = await UserCollection.findOneByUserId(userId);
 
     res.status(200).json({
-      message: `Briefing Mode status is: ${user.briefingModeEnabled}`
+      status: user.briefingModeEnabled,
+      size: user.briefingSize
     });
   }
 );
