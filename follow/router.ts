@@ -66,11 +66,11 @@ router.post(
 /**
  * Get following by user.
  *
- * @name GET /api/follows?followerId=id
+ * @name GET /api/follows?followerUsername=id
  *
- * @return {FreetResponse[]} - An array of follows created by user with id, followerId
- * @throws {400} - If followerId is not given
- * @throws {404} - If no user has given followerId
+ * @return {FreetResponse[]} - An array of follows created by user with id, followerUsername
+ * @throws {400} - If followerUsername is not given
+ * @throws {404} - If no user has given followerUsername
  *
  */
 router.get(
@@ -80,8 +80,8 @@ router.get(
     followValidator.isValidFollowLookup
   ],
   async (req: Request, res: Response) => {
-    if (req.query.followerId && req.query.followeeId) {
-      const follow = await FollowCollection.findOneFollowByUsernames(req.query.followerId as string, req.query.followeeId as string);
+    if (req.query.followerUsername && req.query.followeeUsername) {
+      const follow = await FollowCollection.findOneFollowByUsernames(req.query.followerUsername as string, req.query.followeeUsername as string);
       if (!follow) {
         res.status(200).json({
           message: 'This follow does not exist',
@@ -90,12 +90,12 @@ router.get(
         const response = util.constructFollowResponse(follow);
         res.status(200).json(response);
       }
-    } else if (req.query.followerId) {
-      const user = await FollowCollection.findAllFollowingByUsername(req.query.followerId as string);
+    } else if (req.query.followerUsername) {
+      const user = await FollowCollection.findAllFollowingByUsername(req.query.followerUsername as string);
       const response = user.map(util.constructFollowResponse);
       res.status(200).json(response);
-    } else if (req.query.followeeId) {
-      const user = await FollowCollection.findAllFollowersByUsername(req.query.followeeId as string);
+    } else if (req.query.followeeUsername) {
+      const user = await FollowCollection.findAllFollowersByUsername(req.query.followeeUsername as string);
       const response = user.map(util.constructFollowResponse);
       res.status(200).json(response);
     } else {

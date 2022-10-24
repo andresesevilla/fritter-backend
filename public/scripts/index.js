@@ -49,7 +49,7 @@ const formsAndHandlers = {
   'toggle-user-in-private-circle': updatePrivateCircle,
   'view-anxiety-shield-status': viewAnxietyShieldStatus,
   'add-topic-to-freet' : reportFreet,
-  'toggle-personal-anxiety-reason': togglePersonalAnxietyReason,
+  'toggle-personal-anxiety-topic': togglePersonalAnxietyTopic,
 };
 
 // Attach handlers to forms

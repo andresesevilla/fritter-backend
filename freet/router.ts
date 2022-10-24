@@ -145,7 +145,7 @@ router.patch(
     freetValidator.isValidAnxietyReport
   ],
   async (req: Request, res: Response) => {
-    const freet = await FreetCollection.reportOne(req.params.freetId, req.body.reason);
+    const freet = await FreetCollection.reportOne(req.params.freetId, req.body.topic);
     res.status(200).json({
       message: 'Freet was reported successfully',
       freet: util.constructFreetResponse(freet)

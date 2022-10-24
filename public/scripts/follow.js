@@ -11,19 +11,19 @@ function deleteFollow(fields) {
 }
 
 function viewFollowsByFollower(fields) {
-  fetch(`/api/follows?followerId=${fields.username}`)
+  fetch(`/api/follows?followerUsername=${fields.username}`)
     .then(showResponse)
     .catch(showResponse);
 }
 
 function viewFollowsByFollowee(fields) {
-  fetch(`/api/follows?followeeId=${fields.username}`)
+  fetch(`/api/follows?followeeUsername=${fields.username}`)
     .then(showResponse)
     .catch(showResponse);
 }
 
 function viewFollowByUsernames(fields) {
-  fetch(`/api/follows?followerId=${fields.follower_username}&followeeId=${fields.followee_username}`)
+  fetch(`/api/follows?followerUsername=${fields.follower_username}&followeeUsername=${fields.followee_username}`)
     .then(showResponse)
     .catch(showResponse);
 }

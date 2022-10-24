@@ -49,10 +49,10 @@ router.patch(
     ],
     async (req: Request, res: Response) => {
         const user = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
-        const reason = req.body.reason;
-        await AnxietyShieldCollection.updateAnxietyShield(user, reason)
+        const topic = req.body.topic;
+        await AnxietyShieldCollection.updateAnxietyShield(user, topic)
         res.status(200).json({
-          message: `Updated your Anxiety Reasons to toggle ${reason}.`
+          message: `Updated your Anxiety Topics to toggle ${topic}.`
         });
     }
 );

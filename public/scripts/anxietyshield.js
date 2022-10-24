@@ -4,7 +4,7 @@ function viewAnxietyShieldStatus() {
       .catch(showResponse);
   }
   
-  function togglePersonalAnxietyReason(fields) {
+  function togglePersonalAnxietyTopic(fields) {
     fetch(`/api/anxietyshield`, { method: 'PATCH', body: JSON.stringify(fields), headers: { 'Content-Type': 'application/json' } })
       .then(showResponse)
       .catch(showResponse);
