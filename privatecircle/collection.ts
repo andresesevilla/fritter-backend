@@ -21,7 +21,6 @@ class PrivateCircleCollection {
    * @return {Promise<HydratedDocument<PrivateCircle>>} - The newly created private circle
    */
   static async addOne(ownerId: Types.ObjectId | string, name: string): Promise<HydratedDocument<PrivateCircle>> {
-    const date = new Date();
     const privateCircle = new PrivateCircleModel({
       ownerId,
       name

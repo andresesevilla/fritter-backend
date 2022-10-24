@@ -101,19 +101,15 @@ router.post(
  *
  * @name PUT /api/users
  *
- * @param {string} username - The user's new username
  * @param {string} password - The user's new password
  * @return {UserResponse} - The updated user
  * @throws {403} - If user is not logged in
- * @throws {409} - If username already taken
- * @throws {400} - If username or password are not of the correct format
+ * @throws {400} - If password is not of the correct format
  */
 router.put(
   '/',
   [
     userValidator.isUserLoggedIn,
-    userValidator.isValidUsername,
-    userValidator.isUsernameNotAlreadyInUse,
     userValidator.isValidPassword
   ],
   async (req: Request, res: Response) => {
@@ -128,7 +124,16 @@ router.put(
       return;
     }
 
-    const user = await UserCollection.updateOne(userId, req.body);
+    if (!req.body.password) {
+      res.status(400).json({
+        error: {
+          password: 'You must provide a new password.'
+        }
+      });
+      return;
+    }
+
+    const user = await UserCollection.updateOne(userId, req.body.password);
     res.status(200).json({
       message: 'Your password was updated successfully.',
       user: util.constructUserResponse(user)

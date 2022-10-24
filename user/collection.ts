@@ -47,11 +47,11 @@ class UserCollection {
   }
 
   /**
-   * Find a user by username (case insensitive).
+   * Find a user by username (case insensitive) and password.
    *
    * @param {string} username - The username of the user to find
    * @param {string} password - The password of the user to find
-   * @return {Promise<HydratedDocument<User>> | Promise<null>} - The user with the given username, if any
+   * @return {Promise<HydratedDocument<User>> | Promise<null>} - The user with the given username and password, if any
    */
   static async findOneByUsernameAndPassword(username: string, password: string): Promise<HydratedDocument<User>> {
     return UserModel.findOne({
@@ -64,19 +64,12 @@ class UserCollection {
    * Update user's information
    *
    * @param {string} userId - The userId of the user to update
-   * @param {Object} userDetails - An object with the user's updated credentials
+   * @param {string} password - The new password of the user
    * @return {Promise<HydratedDocument<User>>} - The updated user
    */
-  static async updateOne(userId: Types.ObjectId | string, userDetails: any): Promise<HydratedDocument<User>> {
+  static async updateOne(userId: Types.ObjectId | string, password: string): Promise<HydratedDocument<User>> {
     const user = await UserModel.findOne({ _id: userId });
-    if (userDetails.password) {
-      user.password = userDetails.password as string;
-    }
-
-    if (userDetails.username) {
-      user.username = userDetails.username as string;
-    }
-
+    user.password = password;
     await user.save();
     return user;
   }
