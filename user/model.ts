@@ -13,10 +13,6 @@ export type User = {
   password: string;
   anxietyShieldEnabled: boolean;
   anxietyReasons: Array<string>;
-  briefingModeEnabled: boolean;
-  lastBriefingRefresh: Date;
-  briefingSize: number;
-  briefingRefreshPeriod: number;
 };
 
 // Mongoose schema definition for interfacing with a MongoDB table
@@ -45,30 +41,6 @@ const UserSchema = new Schema({
       { type: String }
     ],
     required: true
-  },
-  // Whether Briefing Mode is enabled
-  briefingModeEnabled: {
-    type: Boolean,
-    required: true,
-    default: false
-  },
-  // The date the user joined
-  lastBriefingRefresh: {
-    type: Date,
-    required: true,
-    default: new Date(0,0)
-  },
-  // The user's briefing size
-  briefingSize: {
-    type: Number,
-    required: true,
-    default: 10
-  },
-  // The user's briefing size
-  briefingRefreshPeriod: {
-    type: Number,
-    required: true,
-    default: 18
   }
 });
 

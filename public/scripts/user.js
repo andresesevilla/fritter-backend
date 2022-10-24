@@ -39,30 +39,6 @@ function toggleAnxietyShieldStatus() {
     .catch(showResponse);
 }
 
-function viewBriefingModeStatus() {
-  fetch(`/api/users/briefingmode`)
-    .then(showResponse)
-    .catch(showResponse);
-}
-
-function toggleBriefingModeStatus() {
-  fetch(`/api/users/briefingmode`, { method: 'PUT' })
-    .then(showResponse)
-    .catch(showResponse);
-}
-
-function setBriefingSize(fields) {
-  fetch(`/api/users/briefingmode?size`, { method: 'PATCH', body: JSON.stringify(fields), headers: { 'Content-Type': 'application/json' } })
-    .then(showResponse)
-    .catch(showResponse);
-}
-
-function setBriefingRefreshPeriod(fields) {
-  fetch(`/api/users/briefingmode?period`, { method: 'PATCH', body: JSON.stringify(fields), headers: { 'Content-Type': 'application/json' } })
-    .then(showResponse)
-    .catch(showResponse);
-}
-
 function togglePersonalAnxietyReason(fields) {
   fetch(`/api/users/anxietyshield`, { method: 'PATCH', body: JSON.stringify(fields), headers: { 'Content-Type': 'application/json' } })
     .then(showResponse)

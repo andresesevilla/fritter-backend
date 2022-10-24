@@ -19,8 +19,6 @@ class UserCollection {
    * @return {Promise<HydratedDocument<User>>} - The newly created user
    */
   static async addOne(username: string, password: string): Promise<HydratedDocument<User>> {
-    const lastBriefingRefresh = new Date(0, 0)
-
     const user = new UserModel({ username, password });
     await user.save(); // Saves user to MongoDB
     return user;

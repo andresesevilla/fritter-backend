@@ -40,9 +40,3 @@ function reportFreet(fields) {
     .then(showResponse)
     .catch(showResponse);
 }
-
-function viewBriefing(fields) {
-  fetch('/api/freets?briefing')
-    .then(showResponse)
-    .catch(showResponse);
-}

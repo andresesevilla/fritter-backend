@@ -43,23 +43,7 @@ router.get(
     const user = await UserCollection.findOneByUserId(userId);
     // Check if feed query parameter was supplied
     if (req.query.feed !== undefined) {
-      if (user.briefingModeEnabled) {
-        res.status(400).json({
-          error: 'You have Briefing Mode enabled. You may not access the feed.'
-        });
-        return;
-      }
       const feedFreets = await FreetCollection.findAllInFeed(userId);
-      const response = feedFreets.map(util.constructFreetResponse);
-      res.status(200).json(response);
-    } else if (req.query.briefing !== undefined) {
-      if (!user.briefingModeEnabled) {
-        res.status(400).json({
-          error: "You don't have briefing mode enabled."
-        });
-        return;
-      }
-      const feedFreets = await FreetCollection.findAllInBriefing(userId);
       const response = feedFreets.map(util.constructFreetResponse);
       res.status(200).json(response);
     } else {

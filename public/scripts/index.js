@@ -49,13 +49,8 @@ const formsAndHandlers = {
   'toggle-user-in-private-circle': updatePrivateCircle,
   'view-anxiety-shield-status': viewAnxietyShieldStatus,
   'toggle-anxiety-shield-status': toggleAnxietyShieldStatus,
-  'view-briefing-mode-status': viewBriefingModeStatus,
-  'toggle-briefing-mode-status': toggleBriefingModeStatus,
   'report-freet-to-anxiety-shield' : reportFreet,
   'toggle-personal-anxiety-reason': togglePersonalAnxietyReason,
-  'view-briefing' : viewBriefing,
-  'set-briefing-size' : setBriefingSize,
-  'set-briefing-refresh-period' : setBriefingRefreshPeriod
 };
 
 // Attach handlers to forms

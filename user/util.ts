@@ -6,8 +6,6 @@ import type {User} from './model';
 type UserResponse = {
   _id: string;
   username: string;
-  lastBriefingRefresh: string;
-  briefingSize: number;
 };
 
 /**
@@ -35,9 +33,7 @@ const constructUserResponse = (user: HydratedDocument<User>): UserResponse => {
   delete userCopy.password;
   return {
     ...userCopy,
-    _id: userCopy._id.toString(),
-    lastBriefingRefresh: formatDate(user.lastBriefingRefresh),
-    briefingSize: user.briefingSize
+    _id: userCopy._id.toString()
   };
 };
 
