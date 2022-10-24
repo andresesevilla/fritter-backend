@@ -51,7 +51,8 @@ const formsAndHandlers = {
   'toggle-anxiety-shield-status': toggleAnxietyShieldStatus,
   'view-briefing-mode-status': viewBriefingModeStatus,
   'toggle-briefing-mode-status': toggleBriefingModeStatus,
-  'report-freet-to-anxiety-shield' : reportFreet
+  'report-freet-to-anxiety-shield' : reportFreet,
+  'toggle-personal-anxiety-reason': togglePersonalAnxietyReason,
 };
 
 // Attach handlers to forms

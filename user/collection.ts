@@ -1,5 +1,5 @@
-import type {HydratedDocument, Types} from 'mongoose';
-import type {User} from './model';
+import type { HydratedDocument, Types } from 'mongoose';
+import type { User } from './model';
 import UserModel from './model';
 
 /**
@@ -21,7 +21,7 @@ class UserCollection {
   static async addOne(username: string, password: string): Promise<HydratedDocument<User>> {
     const dateJoined = new Date();
 
-    const user = new UserModel({username, password, dateJoined, anxietyShieldEnabled: false, briefingModeEnabled: false});
+    const user = new UserModel({ username, password, dateJoined, anxietyShieldEnabled: false, briefingModeEnabled: false });
     await user.save(); // Saves user to MongoDB
     return user;
   }
@@ -33,7 +33,7 @@ class UserCollection {
    * @return {Promise<HydratedDocument<User>> | Promise<null>} - The user with the given username, if any
    */
   static async findOneByUserId(userId: Types.ObjectId | string): Promise<HydratedDocument<User>> {
-    return UserModel.findOne({_id: userId});
+    return UserModel.findOne({ _id: userId });
   }
 
   /**
@@ -43,7 +43,7 @@ class UserCollection {
    * @return {Promise<HydratedDocument<User>> | Promise<null>} - The user with the given username, if any
    */
   static async findOneByUsername(username: string): Promise<HydratedDocument<User>> {
-    return UserModel.findOne({username: new RegExp(`^${username?.trim()}$`, 'i')});
+    return UserModel.findOne({ username: new RegExp(`^${username?.trim()}$`, 'i') });
   }
 
   /**
@@ -68,7 +68,7 @@ class UserCollection {
    * @return {Promise<HydratedDocument<User>>} - The updated user
    */
   static async updateOne(userId: Types.ObjectId | string, userDetails: any): Promise<HydratedDocument<User>> {
-    const user = await UserModel.findOne({_id: userId});
+    const user = await UserModel.findOne({ _id: userId });
     if (userDetails.password) {
       user.password = userDetails.password as string;
     }
@@ -79,6 +79,24 @@ class UserCollection {
 
     await user.save();
     return user;
+  }
+
+  /**
+   * Update user's anxiety inducers
+   *
+   * @param {string} userId - The userId of the user to update
+   * @param {Object} anxietyReason - The anxiety inducing reason
+   */
+  static async toggleAnxietyReason(userId: Types.ObjectId | string, anxietyReason: string): Promise<void> {
+    const user = await UserModel.findOne({ _id: userId });
+    const anxietyReasons = user.anxietyReasons;
+    if (anxietyReasons.includes(anxietyReason)) {
+      anxietyReasons.splice(anxietyReasons.indexOf(anxietyReason));
+    } else {
+      anxietyReasons.push(anxietyReason);
+    }
+    user.anxietyReasons = anxietyReasons;
+    await user.save();
   }
 }
 

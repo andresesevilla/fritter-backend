@@ -3,6 +3,7 @@ import express from 'express';
 import FreetCollection from '../freet/collection';
 import UserCollection from './collection';
 import * as userValidator from '../user/middleware';
+import * as freetValidator from '../freet/middleware';
 import * as util from './util';
 import FollowCollection from '../follow/collection';
 
@@ -134,7 +135,30 @@ router.put(
     const user = await UserCollection.findOneByUserId(userId);
 
     res.status(200).json({
-      message: `Anxiety Shield status is: ${user.anxietyShieldEnabled}`
+      message: `Anxiety Shield enable status is: ${user.anxietyShieldEnabled}`,
+      reasons: user.anxietyReasons
+    });
+  }
+);
+
+/**
+ * Add a personal anxiety inducing topic
+ *
+ * @name PATCH /api/users/anxietyshield
+ */
+ router.patch(
+  '/anxietyshield',
+  [
+    userValidator.isUserLoggedIn,
+    freetValidator.isValidAnxietyReport
+  ],
+  async (req: Request, res: Response) => {
+    const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+    const user = await UserCollection.findOneByUserId(userId);
+    const reason = req.body.reason;
+    await UserCollection.toggleAnxietyReason(userId, reason);
+    res.status(200).json({
+      message: `Updated your Anxiety Reasons to toggle ${reason}.`
     });
   }
 );

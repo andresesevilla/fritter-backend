@@ -198,13 +198,13 @@
         </form>
 
         <form id="view-anxiety-shield-status">
-          <h3>View If You Have Anxiety Shield Enabled</h3>
-          <input type="submit" value="View Anxiety Shield Status">
+          <h3>View Your Anxiety Shield Settings</h3>
+          <input type="submit" value="View Anxiety Shield Settings">
         </form>
 
         <form id="toggle-anxiety-shield-status">
-          <h3>Toggle Anxiety Shield Status</h3>
-          <input type="submit" value="Toggle Anxiety Shield Status">
+          <h3>Toggle Anxiety Shield Enable Status</h3>
+          <input type="submit" value="Toggle Anxiety Shield Enable Status">
         </form>
 
         <form id="report-freet-to-anxiety-shield">
@@ -223,6 +223,20 @@
             </select>
           </div>
           <input type="submit" value="Report Freet to Anxiety Shield">
+        </form>
+
+        <form id="toggle-personal-anxiety-reason">
+          <h3>Toggle Shielding of an Anxiety Inducing Topic</h3>
+          <div>
+            <label for="reason">Reason:</label>
+            <select name="reason" id="reason">
+              <option value="mass_casualty_event">Mass Casualty Event</option>
+              <option value="disaster">Disaster</option>
+              <option value="sexual_violence">Sexual Violence</option>
+              <option value="other_anxiety">Other Anxiety</option>
+            </select>
+          </div>
+          <input type="submit" value="Toggle Personal Anxiety Reason">
         </form>
 
         <form id="view-briefing-mode-status">

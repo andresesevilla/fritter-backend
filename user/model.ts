@@ -13,6 +13,7 @@ export type User = {
   password: string;
   dateJoined: Date;
   anxietyShieldEnabled: boolean;
+  anxietyReasons: Array<string>;
   briefingModeEnabled: boolean;
 };
 
@@ -38,6 +39,13 @@ const UserSchema = new Schema({
   // Whether Anxiety Shield is enabled
   anxietyShieldEnabled: {
     type: Boolean,
+    required: true
+  },
+  // Anxiety inducing subjects for this user
+  anxietyReasons: {
+    type: [
+      {type: String}
+    ],
     required: true
   },
   // Whether Briefing Mode is enabled
