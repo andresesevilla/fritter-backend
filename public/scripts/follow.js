@@ -5,7 +5,7 @@ function createFollow(fields) {
 }
 
 function deleteFollow(fields) {
-  fetch('/api/follows', {method: 'DELETE', body: JSON.stringify(fields), headers: {'Content-Type': 'application/json'}})
+  fetch(`/api/follows/${fields.username}`, {method: 'DELETE'})
     .then(showResponse)
     .catch(showResponse);
 }

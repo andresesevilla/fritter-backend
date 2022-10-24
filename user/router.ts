@@ -106,7 +106,7 @@ router.post(
  * @throws {403} - If user is not logged in
  * @throws {400} - If password is not of the correct format
  */
-router.put(
+router.patch(
   '/',
   [
     userValidator.isUserLoggedIn,

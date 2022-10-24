@@ -42,14 +42,14 @@ router.post(
  * @throws {403} - If the user is not logged in
  */
  router.delete(
-  '/',
+  '/:username?',
   [
     userValidator.isUserLoggedIn,
     followValidator.isValidUnfollow
   ],
   async (req: Request, res: Response) => {
     const follower = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
-    const followee = await UserCollection.findOneByUsername(req.body.username);
+    const followee = await UserCollection.findOneByUsername(req.params.username);
 
     if (FollowCollection.deleteOne(follower, followee.id)) {
       res.status(201).json({

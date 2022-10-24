@@ -45,7 +45,7 @@ const isValidFollow = async (req: Request, res: Response, next: NextFunction) =>
 const isValidUnfollow = async (req: Request, res: Response, next: NextFunction) => {
 
     // Must supply a user to unfollow
-    const followeeUsername = req.body.username;
+    const followeeUsername = req.params.username;
     if (!followeeUsername) {
         res.status(400).json({ error: 'Missing username to unfollow' });
         return;

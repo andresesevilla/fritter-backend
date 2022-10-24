@@ -135,7 +135,7 @@ router.delete(
 /**
  * Report a freet
  *
- * @name PUT /api/freets/:id
+ * @name PATCH /api/freets/:id
  */
 router.patch(
   '/:freetId?',

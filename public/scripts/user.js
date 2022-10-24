@@ -10,7 +10,7 @@ function createUser(fields) {
 }
 
 function changePassword(fields) {
-  fetch('/api/users', { method: 'PUT', body: JSON.stringify(fields), headers: { 'Content-Type': 'application/json' } })
+  fetch('/api/users', { method: 'PATCH', body: JSON.stringify(fields), headers: { 'Content-Type': 'application/json' } })
     .then(showResponse)
     .catch(showResponse);
 }
@@ -23,18 +23,6 @@ function signIn(fields) {
 
 function signOut() {
   fetch('/api/users/session', { method: 'DELETE' })
-    .then(showResponse)
-    .catch(showResponse);
-}
-
-function viewAnxietyShieldStatus() {
-  fetch(`/api/anxietyshield`)
-    .then(showResponse)
-    .catch(showResponse);
-}
-
-function togglePersonalAnxietyReason(fields) {
-  fetch(`/api/anxietyshield`, { method: 'PATCH', body: JSON.stringify(fields), headers: { 'Content-Type': 'application/json' } })
     .then(showResponse)
     .catch(showResponse);
 }
