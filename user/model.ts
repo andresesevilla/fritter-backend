@@ -64,13 +64,11 @@ const UserSchema = new Schema({
   // The user's briefing size
   briefingSize: {
     type: Number,
-    min: 5,
     required: true
   },
   // The user's briefing size
   briefingRefreshPeriod: {
     type: Number,
-    min: 1,
     required: true
   }
 });

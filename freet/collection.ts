@@ -168,13 +168,32 @@ class FreetCollection {
     const requiredTimeDifference = user.briefingRefreshPeriod * 60 * 60 * 1000;
 
     if (timeDifference >= requiredTimeDifference) {
-      console.log("Refresh is legal, refreshing");
       user.lastBriefingRefresh = currentTime;
       user.save();
-    } else {
-      console.log("Refresh is not legal, supplying cached")
     }
-    return [];
+
+    const following = await FollowCollection.findAllFollowingByUsername(user.username);
+    const followingUsernames = following.map(follow => {
+      const followCopy: PopulatedFollow = { ...follow.toObject() };
+      const { _id: followee } = followCopy.followeeId;
+      return { authorId: followee };
+    })
+    if (followingUsernames.length === 0) {
+      return [];
+    }
+    const freets = await FreetModel.find({ $or: followingUsernames }).sort({ dateCreated: -1 }).populate('authorId');
+    const result = [];
+    for (const freet of freets) {
+      const accessGranted = await this.checkAccess(userId, freet);
+      const freetPostTime = freet.dateCreated;
+      if (accessGranted && user.lastBriefingRefresh.getTime() - freetPostTime.getTime() > 0) {
+        result.push(freet);
+      }
+      if (result.length >= user.briefingSize) {
+        break;
+      }
+    }
+    return result;
   }
 
   /**
