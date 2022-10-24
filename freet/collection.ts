@@ -24,7 +24,7 @@ class FreetCollection {
    * @return {Promise<Boolean>} - True if user has access, false otherwise
    */
   static async checkAccess(userId: Types.ObjectId | string, freet: Freet): Promise<Boolean> {
-    const privateCircleName = freet.privateCircle;
+    const privateCircleName = freet.restrictAccess;
     if (!privateCircleName) {
       return true;
     }
@@ -63,13 +63,13 @@ class FreetCollection {
    * @param {string} privateCircle - The name of the private circle of the freet
    * @return {Promise<HydratedDocument<Freet>>} - The newly created freet
    */
-  static async addOneWithPrivateCircle(authorId: Types.ObjectId | string, content: string, privateCircle: string): Promise<HydratedDocument<Freet>> {
+  static async addOneWithPrivateCircle(authorId: Types.ObjectId | string, content: string, restrictAccess: string): Promise<HydratedDocument<Freet>> {
     const date = new Date();
     const freet = new FreetModel({
       authorId,
       dateCreated: date,
       content,
-      privateCircle
+      restrictAccess
     });
     await freet.save(); // Saves freet to MongoDB
     return freet.populate('authorId');
@@ -171,7 +171,7 @@ class FreetCollection {
    * @param {string} privateCircle - The name of the private circle of freets
    */
   static async deleteMany(privateCircle: string): Promise<void> {
-    await FreetModel.deleteMany({ privateCircle });
+    await FreetModel.deleteMany({ restrictAccess: privateCircle });
   }
 
   /**

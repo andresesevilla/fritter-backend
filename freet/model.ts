@@ -1,6 +1,6 @@
-import type {Types, PopulatedDoc, Document} from 'mongoose';
-import {Schema, model} from 'mongoose';
-import type {User} from '../user/model';
+import type { Types, PopulatedDoc, Document } from 'mongoose';
+import { Schema, model } from 'mongoose';
+import type { User } from '../user/model';
 
 /**
  * This file defines the properties stored in a Freet
@@ -13,7 +13,7 @@ export type Freet = {
   authorId: Types.ObjectId;
   dateCreated: Date;
   content: string;
-  privateCircle: string;
+  restrictAccess: string;
   anxietyReasons: Array<string>;
 };
 
@@ -47,13 +47,13 @@ const FreetSchema = new Schema<Freet>({
     type: String,
     required: true
   },
-  privateCircle: {
+  restrictAccess: {
     type: String,
     required: false
   },
   anxietyReasons: {
     type: [
-      {type: String}
+      { type: String }
     ],
     required: true
   }

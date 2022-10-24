@@ -6,8 +6,7 @@ import PrivateCircleCollection from '../privatecircle/collection';
 
 /**
  * This files contains a class that has the functionality to explore follows
- * stored in MongoDB, including adding, finding, updating, and deleting follows.
- * Feel free to add additional operations in this file.
+ * stored in MongoDB, including adding, finding, and deleting follows.
  *
  * Note: HydratedDocument<Follow> is the output of the FollowModel() constructor,
  * and contains all the information in Follow. https://mongoosejs.com/docs/typescript.html

@@ -1,10 +1,9 @@
-import type {Types, PopulatedDoc, Document} from 'mongoose';
-import {Schema, model} from 'mongoose';
-import type {User} from '../user/model';
+import type { Types, PopulatedDoc, Document } from 'mongoose';
+import { Schema, model } from 'mongoose';
+import type { User } from '../user/model';
 
 /**
  * This file defines the properties stored in a Private Circle
- * DO NOT implement operations here ---> use collection file
  */
 
 // Type definition for Private Circle on the backend
@@ -40,7 +39,7 @@ const PrivateCircleSchema = new Schema<PrivateCircle>({
   },
   members: {
     type: [
-      {type: String}
+      { type: String }
     ],
     required: true
   }
