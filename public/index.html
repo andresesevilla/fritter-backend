@@ -103,6 +103,24 @@
           <input type="submit" value="Delete Freet">
         </form>
 
+        <form id="add-topic-to-freet">
+          <h3>Add Topic to Freet (Report to Anxiety Shield)</h3>
+          <div>
+            <label for="id">Freet ID:</label>
+            <input id="id" name="id">
+          </div>
+          <div>
+            <label for="reason">Reason:</label>
+            <select name="reason" id="reason">
+              <option value="mass_casualty_event">Mass Casualty Event</option>
+              <option value="disaster">Disaster</option>
+              <option value="sexual_violence">Sexual Violence</option>
+              <option value="other_anxiety">Other Anxiety</option>
+            </select>
+          </div>
+          <input type="submit" value="Add Topic to Freet">
+        </form>
+
         <form id="create-follow">
           <h3>Follow User</h3>
           <div>
@@ -200,24 +218,6 @@
         <form id="view-anxiety-shield-status">
           <h3>View Your Anxiety Shield Settings</h3>
           <input type="submit" value="View Anxiety Shield Settings">
-        </form>
-
-        <form id="report-freet-to-anxiety-shield">
-          <h3>Report Freet to Anxiety Shield</h3>
-          <div>
-            <label for="id">Freet ID:</label>
-            <input id="id" name="id">
-          </div>
-          <div>
-            <label for="reason">Reason:</label>
-            <select name="reason" id="reason">
-              <option value="mass_casualty_event">Mass Casualty Event</option>
-              <option value="disaster">Disaster</option>
-              <option value="sexual_violence">Sexual Violence</option>
-              <option value="other_anxiety">Other Anxiety</option>
-            </select>
-          </div>
-          <input type="submit" value="Report Freet to Anxiety Shield">
         </form>
 
         <form id="toggle-personal-anxiety-reason">

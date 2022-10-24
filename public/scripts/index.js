@@ -48,7 +48,7 @@ const formsAndHandlers = {
   'view-private-circles': viewPrivateCircles,
   'toggle-user-in-private-circle': updatePrivateCircle,
   'view-anxiety-shield-status': viewAnxietyShieldStatus,
-  'report-freet-to-anxiety-shield' : reportFreet,
+  'add-topic-to-freet' : reportFreet,
   'toggle-personal-anxiety-reason': togglePersonalAnxietyReason,
 };
 

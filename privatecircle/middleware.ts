@@ -75,7 +75,7 @@ const isValidCreatePrivateCircle = async (req: Request, res: Response, next: Nex
     if (!follow) {
         res.status(400).json({
             error: {
-                yourselfInCircle: `People in your Private Circle must follow you.`
+                mustFollowYou: `People in your Private Circle must follow you.`
             }
         });
         return;
