@@ -76,11 +76,13 @@ class PrivateCircleCollection {
     const user = await UserCollection.findOneByUserId(userId);
     const privateCircle = await PrivateCircleModel.findOne({ ownerId: user._id, name: name })
     const members = privateCircle.members;
+    const userToToggle = await UserCollection.findOneByUsername(username);
+    const usernameStandardized = userToToggle.username;
 
-    if (members.includes(username)) {
-      members.splice(members.indexOf(username))
+    if (members.includes(usernameStandardized)) {
+      members.splice(members.indexOf(usernameStandardized))
     } else {
-      members.push(username)
+      members.push(usernameStandardized)
     }
 
     privateCircle.members = members;
