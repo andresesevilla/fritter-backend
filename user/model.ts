@@ -42,7 +42,8 @@ const UserSchema = new Schema({
   // Whether Anxiety Shield is enabled
   anxietyShieldEnabled: {
     type: Boolean,
-    required: true
+    required: true,
+    default: false
   },
   // Anxiety inducing subjects for this user
   anxietyReasons: {
@@ -54,22 +55,26 @@ const UserSchema = new Schema({
   // Whether Briefing Mode is enabled
   briefingModeEnabled: {
     type: Boolean,
-    required: true
+    required: true,
+    default: false
   },
   // The date the user joined
   lastBriefingRefresh: {
     type: Date,
-    required: true
+    required: true,
+    default: new Date(0,0)
   },
   // The user's briefing size
   briefingSize: {
     type: Number,
-    required: true
+    required: true,
+    default: 10
   },
   // The user's briefing size
   briefingRefreshPeriod: {
     type: Number,
-    required: true
+    required: true,
+    default: 18
   }
 });
 
