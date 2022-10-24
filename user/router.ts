@@ -1,4 +1,4 @@
-import type { Request, Response } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import express from 'express';
 import FreetCollection from '../freet/collection';
 import UserCollection from './collection';
@@ -125,7 +125,7 @@ router.put(
  * @name GET /api/users/anxietyshield
  *
  */
- router.get(
+router.get(
   '/anxietyshield',
   [
     userValidator.isUserLoggedIn,
@@ -146,7 +146,7 @@ router.put(
  *
  * @name PATCH /api/users/anxietyshield
  */
- router.patch(
+router.patch(
   '/anxietyshield',
   [
     userValidator.isUserLoggedIn,
@@ -169,7 +169,7 @@ router.put(
  * @name PUT /api/users/briefingmode
  *
  */
- router.put(
+router.put(
   '/briefingmode',
   [
     userValidator.isUserLoggedIn,
@@ -192,13 +192,40 @@ router.put(
  * @name PATCH /api/users/briefingmode
  *
  */
- router.patch(
+router.patch(
   '/briefingmode',
   [
     userValidator.isUserLoggedIn,
-    userValidator.isValidBriefingSize
+    userValidator.isValidSize
   ],
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response, next: NextFunction) => {
+
+    if (req.query.size !== undefined) {
+      next()
+      return;
+    }
+
+    if (req.query.period === undefined) {
+      res.status(400).json({
+        error: {
+          username: 'Must request with query period or size.'
+        }
+      });
+      return;
+    }
+
+    const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+    const user = await UserCollection.findOneByUserId(userId);
+    const period = parseInt(req.body.size);
+
+    user.briefingRefreshPeriod = period;
+    user.save();
+
+    res.status(200).json({
+      message: `Briefing Mode period updated to: ${user.briefingRefreshPeriod}`
+    });
+  },
+  async (req: Request, res: Response, next: NextFunction) => {
     const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
     const user = await UserCollection.findOneByUserId(userId);
     const size = parseInt(req.body.size);
@@ -209,7 +236,7 @@ router.put(
     res.status(200).json({
       message: `Briefing Mode size updated to: ${user.briefingSize}`
     });
-  }
+  },
 );
 
 /**
@@ -218,7 +245,7 @@ router.put(
  * @name GET /api/users/briefingmode
  *
  */
- router.get(
+router.get(
   '/briefingmode',
   [
     userValidator.isUserLoggedIn,
@@ -226,10 +253,14 @@ router.put(
   async (req: Request, res: Response) => {
     const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
     const user = await UserCollection.findOneByUserId(userId);
-
+    const currentTime = new Date().getTime();
+    const timeOfNextRefresh = user.lastBriefingRefresh.getTime() + user.briefingRefreshPeriod * 60 * 60 * 1000;
+    const minutesToNextRefresh = Math.floor(Math.max((timeOfNextRefresh - currentTime) / 1000 / 60, 0));
     res.status(200).json({
       status: user.briefingModeEnabled,
-      size: user.briefingSize
+      size: user.briefingSize,
+      period: user.briefingRefreshPeriod,
+      minutesToNextRefresh: minutesToNextRefresh
     });
   }
 );

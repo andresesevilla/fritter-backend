@@ -17,6 +17,7 @@ export type User = {
   briefingModeEnabled: boolean;
   lastBriefingRefresh: Date;
   briefingSize: number;
+  briefingRefreshPeriod: number;
 };
 
 // Mongoose schema definition for interfacing with a MongoDB table
@@ -64,6 +65,12 @@ const UserSchema = new Schema({
   briefingSize: {
     type: Number,
     min: 5,
+    required: true
+  },
+  // The user's briefing size
+  briefingRefreshPeriod: {
+    type: Number,
+    min: 1,
     required: true
   }
 });

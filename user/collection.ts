@@ -22,7 +22,7 @@ class UserCollection {
     const dateJoined = new Date();
     const lastBriefingRefresh = new Date(0, 0)
 
-    const user = new UserModel({ username, password, dateJoined, anxietyShieldEnabled: false, briefingModeEnabled: false, lastBriefingRefresh, briefingSize: 10 });
+    const user = new UserModel({ username, password, dateJoined, anxietyShieldEnabled: false, briefingModeEnabled: false, lastBriefingRefresh, briefingSize: 10, briefingRefreshPeriod: 18 });
     await user.save(); // Saves user to MongoDB
     return user;
   }

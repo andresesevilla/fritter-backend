@@ -5,6 +5,7 @@ import UserCollection from '../user/collection';
 import FollowCollection from '../follow/collection';
 import type { Follow, PopulatedFollow } from '../follow/model';
 import PrivateCircleCollection from '../privatecircle/collection';
+import UserModel from '../user/model';
 
 /**
  * This files contains a class that has the functionality to explore freets
@@ -151,6 +152,29 @@ class FreetCollection {
       }
     }
     return result;
+  }
+
+  /**
+   * Gets the user's current briefing (updates it if necessary)
+   *
+   * @param {string} userId - The username of the user
+   * @return {Promise<HydratedDocument<Freet>[]>} - An array of all of the freets made by followed users
+   */
+  static async findAllInBriefing(userId: string): Promise<Array<HydratedDocument<Freet>>> {
+    const user = await UserModel.findOne({ _id: userId });
+    const lastBriefingRefresh = user.lastBriefingRefresh;
+    const currentTime = new Date();
+    const timeDifference = currentTime.getTime() - lastBriefingRefresh.getTime();
+    const requiredTimeDifference = user.briefingRefreshPeriod * 60 * 60 * 1000;
+
+    if (timeDifference >= requiredTimeDifference) {
+      console.log("Refresh is legal, refreshing");
+      user.lastBriefingRefresh = currentTime;
+      user.save();
+    } else {
+      console.log("Refresh is not legal, supplying cached")
+    }
+    return [];
   }
 
   /**

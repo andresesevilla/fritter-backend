@@ -53,7 +53,9 @@ const formsAndHandlers = {
   'toggle-briefing-mode-status': toggleBriefingModeStatus,
   'report-freet-to-anxiety-shield' : reportFreet,
   'toggle-personal-anxiety-reason': togglePersonalAnxietyReason,
-  'set-briefing-size' : setBriefingSize
+  'view-briefing' : viewBriefing,
+  'set-briefing-size' : setBriefingSize,
+  'set-briefing-refresh-period' : setBriefingRefreshPeriod
 };
 
 // Attach handlers to forms

@@ -52,7 +52,13 @@ function toggleBriefingModeStatus() {
 }
 
 function setBriefingSize(fields) {
-  fetch(`/api/users/briefingmode`, { method: 'PATCH', body: JSON.stringify(fields), headers: { 'Content-Type': 'application/json' } })
+  fetch(`/api/users/briefingmode?size`, { method: 'PATCH', body: JSON.stringify(fields), headers: { 'Content-Type': 'application/json' } })
+    .then(showResponse)
+    .catch(showResponse);
+}
+
+function setBriefingRefreshPeriod(fields) {
+  fetch(`/api/users/briefingmode?period`, { method: 'PATCH', body: JSON.stringify(fields), headers: { 'Content-Type': 'application/json' } })
     .then(showResponse)
     .catch(showResponse);
 }

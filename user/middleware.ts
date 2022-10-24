@@ -157,21 +157,21 @@ const isAuthorExists = async (req: Request, res: Response, next: NextFunction) =
 /**
  * Checks if briefing size is valid
  */
-const isValidBriefingSize = (req: Request, res: Response, next: NextFunction) => {
+const isValidSize = (req: Request, res: Response, next: NextFunction) => {
   const briefingSizeRaw = req.body.size;
   if (!briefingSizeRaw || isNaN(briefingSizeRaw)) {
     res.status(400).json({
       error: {
-        username: 'Nonempty, numeric briefing size must be supplied'
+        username: 'Nonempty, numeric size must be supplied'
       }
     });
     return;
   }
   const briefingSize = parseInt(briefingSizeRaw)
-  if (briefingSize < 5) {
+  if (briefingSize < 1) {
     res.status(400).json({
       error: {
-        username: 'Briefing size must be greater than 5'
+        username: 'Size must be at least 1'
       }
     });
     return;
@@ -188,5 +188,5 @@ export {
   isAuthorExists,
   isValidUsername,
   isValidPassword,
-  isValidBriefingSize
+  isValidSize
 };
