@@ -6,7 +6,6 @@ import type {User} from './model';
 type UserResponse = {
   _id: string;
   username: string;
-  dateJoined: string;
   lastBriefingRefresh: string;
   briefingSize: number;
 };
@@ -37,7 +36,6 @@ const constructUserResponse = (user: HydratedDocument<User>): UserResponse => {
   return {
     ...userCopy,
     _id: userCopy._id.toString(),
-    dateJoined: formatDate(user.dateJoined),
     lastBriefingRefresh: formatDate(user.lastBriefingRefresh),
     briefingSize: user.briefingSize
   };

@@ -11,7 +11,6 @@ export type User = {
   _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
   username: string;
   password: string;
-  dateJoined: Date;
   anxietyShieldEnabled: boolean;
   anxietyReasons: Array<string>;
   briefingModeEnabled: boolean;
@@ -32,11 +31,6 @@ const UserSchema = new Schema({
   // The user's password
   password: {
     type: String,
-    required: true
-  },
-  // The date the user joined
-  dateJoined: {
-    type: Date,
     required: true
   },
   // Whether Anxiety Shield is enabled
