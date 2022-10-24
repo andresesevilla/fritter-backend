@@ -110,7 +110,7 @@ class FreetCollection {
    */
   static async findAllByUsername(userId: string, username: string): Promise<Array<HydratedDocument<Freet>>> {
     const author = await UserCollection.findOneByUsername(username);
-    const freets = await FreetModel.find({ authorId: author._id }).populate('authorId');
+    const freets = await FreetModel.find({ authorId: author._id }).sort({ dateCreated: -1 }).populate('authorId');
     const result = [];
     for (const freet of freets) {
       const accessGranted = await this.checkAccess(userId, freet);
