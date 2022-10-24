@@ -13,6 +13,7 @@ import {userRouter} from '../user/router';
 import {freetRouter} from '../freet/router';
 import {followRouter} from '../follow/router';
 import {privateCircleRouter} from '../privatecircle/router';
+import { anxietyShieldRouter } from '../anxietyshield/router';
 
 // Load environmental variables
 dotenv.config({});
@@ -80,6 +81,7 @@ app.use('/api/users', userRouter);
 app.use('/api/freets', freetRouter);
 app.use('/api/follows', followRouter)
 app.use('/api/privatecircles', privateCircleRouter)
+app.use('/api/anxietyshield', anxietyShieldRouter)
 
 // Catch all the other routes and display error message
 app.all('*', (req: Request, res: Response) => {

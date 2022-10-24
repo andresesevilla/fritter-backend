@@ -4,7 +4,6 @@ import type { User } from '../user/model';
 
 /**
  * This file defines the properties stored in a Freet
- * DO NOT implement operations here ---> use collection file
  */
 
 // Type definition for Freet on the backend

@@ -1,3 +1,4 @@
+import AnxietyShieldCollection from '../anxietyshield/collection';
 import type { HydratedDocument, Types } from 'mongoose';
 import type { User } from './model';
 import UserModel from './model';
@@ -21,6 +22,7 @@ class UserCollection {
   static async addOne(username: string, password: string): Promise<HydratedDocument<User>> {
     const user = new UserModel({ username, password });
     await user.save(); // Saves user to MongoDB
+    await AnxietyShieldCollection.addOne(user.id);
     return user;
   }
 
@@ -77,24 +79,6 @@ class UserCollection {
 
     await user.save();
     return user;
-  }
-
-  /**
-   * Update user's anxiety inducers
-   *
-   * @param {string} userId - The userId of the user to update
-   * @param {Object} anxietyReason - The anxiety inducing reason
-   */
-  static async toggleAnxietyReason(userId: Types.ObjectId | string, anxietyReason: string): Promise<void> {
-    const user = await UserModel.findOne({ _id: userId });
-    const anxietyReasons = user.anxietyReasons;
-    if (anxietyReasons.includes(anxietyReason)) {
-      anxietyReasons.splice(anxietyReasons.indexOf(anxietyReason));
-    } else {
-      anxietyReasons.push(anxietyReason);
-    }
-    user.anxietyReasons = anxietyReasons;
-    await user.save();
   }
 }
 

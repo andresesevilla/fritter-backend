@@ -11,8 +11,6 @@ export type User = {
   _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
   username: string;
   password: string;
-  anxietyShieldEnabled: boolean;
-  anxietyReasons: Array<string>;
 };
 
 // Mongoose schema definition for interfacing with a MongoDB table
@@ -29,19 +27,6 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
-  // Whether Anxiety Shield is enabled
-  anxietyShieldEnabled: {
-    type: Boolean,
-    required: true,
-    default: false
-  },
-  // Anxiety inducing subjects for this user
-  anxietyReasons: {
-    type: [
-      { type: String }
-    ],
-    required: true
-  }
 });
 
 const UserModel = model<User>('User', UserSchema);

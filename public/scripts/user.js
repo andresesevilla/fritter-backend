@@ -28,19 +28,13 @@ function signOut() {
 }
 
 function viewAnxietyShieldStatus() {
-  fetch(`/api/users/anxietyshield`)
-    .then(showResponse)
-    .catch(showResponse);
-}
-
-function toggleAnxietyShieldStatus() {
-  fetch(`/api/users/anxietyshield`, { method: 'PUT' })
+  fetch(`/api/anxietyshield`)
     .then(showResponse)
     .catch(showResponse);
 }
 
 function togglePersonalAnxietyReason(fields) {
-  fetch(`/api/users/anxietyshield`, { method: 'PATCH', body: JSON.stringify(fields), headers: { 'Content-Type': 'application/json' } })
+  fetch(`/api/anxietyshield`, { method: 'PATCH', body: JSON.stringify(fields), headers: { 'Content-Type': 'application/json' } })
     .then(showResponse)
     .catch(showResponse);
 }
