@@ -13,7 +13,7 @@ export type Freet = {
   dateCreated: Date;
   content: string;
   restrictAccess: string;
-  anxietyReasons: Array<string>;
+  topics: Array<string>;
 };
 
 export type PopulatedFreet = {
@@ -22,7 +22,7 @@ export type PopulatedFreet = {
   dateCreated: Date;
   content: string;
   privateCircle: string;
-  anxietyReasons: Array<string>;
+  topics: Array<string>;
 };
 
 // Mongoose schema definition for interfacing with a MongoDB table
@@ -50,7 +50,7 @@ const FreetSchema = new Schema<Freet>({
     type: String,
     required: false
   },
-  anxietyReasons: {
+  topics: {
     type: [
       { type: String }
     ],

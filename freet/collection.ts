@@ -183,11 +183,11 @@ class FreetCollection {
    */
   static async reportOne(freetId: Types.ObjectId | string, reason: string): Promise<HydratedDocument<Freet>> {
     const freet = await FreetModel.findOne({ _id: freetId });
-    const anxietyReasons = freet.anxietyReasons;
-    if (!anxietyReasons.includes(reason)) {
-      anxietyReasons.push(reason);
+    const topics = freet.topics;
+    if (!topics.includes(reason)) {
+      topics.push(reason);
     }
-    freet.anxietyReasons = anxietyReasons;
+    freet.topics = topics;
     freet.save();
     return freet.populate('authorId');
   }
