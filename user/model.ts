@@ -25,7 +25,8 @@ const UserSchema = new Schema({
   // The user's password
   password: {
     type: String,
-    required: true
+    required: true,
+    select: false
   },
 });
 

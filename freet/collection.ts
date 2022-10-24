@@ -34,7 +34,7 @@ class FreetCollection {
     }
     const members = privateCircle.members;
     const user = await UserCollection.findOneByUserId(userId);
-    return members.includes(user.username)
+    return members.includes(user.id)
   }
 
   /**

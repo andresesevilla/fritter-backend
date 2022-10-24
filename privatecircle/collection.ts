@@ -26,7 +26,7 @@ class PrivateCircleCollection {
       name
     });
     await privateCircle.save(); // Saves freet to MongoDB
-    return privateCircle.populate('ownerId');
+    return privateCircle.populate(['ownerId', 'members']);
   }
 
   /**
@@ -37,7 +37,7 @@ class PrivateCircleCollection {
    */
   static async findAllPrivateCirclesByUsername(userId: string): Promise<Array<HydratedDocument<PrivateCircle>>> {
     const user = await UserCollection.findOneByUserId(userId);
-    return PrivateCircleModel.find({ ownerId: user._id }).populate(['ownerId']);
+    return PrivateCircleModel.find({ ownerId: user._id }).populate(['ownerId', 'members']);
   }
 
   /**
@@ -49,7 +49,7 @@ class PrivateCircleCollection {
    */
   static async findPrivateCircleByOwnerAndName(userId: Types.ObjectId | string, name: string): Promise<HydratedDocument<PrivateCircle>> {
     const user = await UserCollection.findOneByUserId(userId);
-    return PrivateCircleModel.findOne({ ownerId: user._id, name: name }).populate(['ownerId']);
+    return PrivateCircleModel.findOne({ ownerId: user._id, name: name }).populate(['ownerId', 'members']);
   }
 
   /**
@@ -78,15 +78,15 @@ class PrivateCircleCollection {
     const userToToggle = await UserCollection.findOneByUsername(username);
     const usernameStandardized = userToToggle.username;
 
-    if (members.includes(usernameStandardized)) {
-      members.splice(members.indexOf(usernameStandardized))
+    if (members.includes(userToToggle.id)) {
+      members.splice(members.indexOf(userToToggle.id))
     } else {
-      members.push(usernameStandardized)
+      members.push(userToToggle.id)
     }
 
     privateCircle.members = members;
     await privateCircle.save();
-    return privateCircle.populate('ownerId');
+    return privateCircle.populate(['ownerId', 'members']);
   }
 
   /**
@@ -101,8 +101,8 @@ class PrivateCircleCollection {
     const privateCircles = await PrivateCircleModel.find({ ownerId: userIdPrivateCirclesOwner });
     for (const privateCircle of privateCircles) {
       const members = privateCircle.members;
-      if (members.includes(userToRemoveUsername)) {
-        members.splice(members.indexOf(userToRemoveUsername))
+      if (members.includes(userToRemove.id)) {
+        members.splice(members.indexOf(userToRemove.id))
       }
       await privateCircle.save();
     }

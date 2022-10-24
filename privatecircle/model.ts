@@ -11,14 +11,14 @@ export type PrivateCircle = {
   _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
   name: string,
   ownerId: Types.ObjectId;
-  members: Array<string>;
+  members: Array<Types.ObjectId>;
 };
 
 export type PopulatedPrivateCircle = {
   _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
   name: string,
   ownerId: User;
-  members: Array<string>;
+  members: Array<User>;
 };
 
 // Mongoose schema definition for interfacing with a MongoDB table
@@ -39,7 +39,10 @@ const PrivateCircleSchema = new Schema<PrivateCircle>({
   },
   members: {
     type: [
-      { type: String }
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+      }
     ],
     required: true
   }
