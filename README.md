@@ -76,6 +76,7 @@ Renders the `index.html` file that will be used to interact with the backend
 **Returns**
 
 - A success message
+- The updated freet
 
 **Throws**
 
@@ -268,6 +269,7 @@ Renders the `index.html` file that will be used to interact with the backend
 **Returns**
 
 - A success message
+- The updated Private Circle
 
 **Throws**
 
