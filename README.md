@@ -2,9 +2,73 @@
 
 Backend for Fritter assignment in MIT 6.1040. The following are the API routes implemented.
 
+Listed in same order as corresponding actions in index.html.
+
 ## `GET /`
 
 Renders the `index.html` file that will be used to interact with the backend
+
+## `POST /api/users` - Create an new user account
+
+**Body**
+
+- `username` *{string}* - The user's username
+- `password` *{string}* - The user's password
+
+**Returns**
+
+- A success message
+- An object with the created user's details (without password)
+
+**Throws**
+
+- `403` if there is a user already logged in
+- `400` if username or password is in the wrong format
+- `409` if username is already in use
+
+## `POST /api/users/session` - Sign in user
+
+**Body**
+
+- `username` *{string}* - The user's username
+- `password` *{string}* - The user's password
+
+**Returns**
+
+- A success message
+- An object with user's details (without password)
+
+**Throws**
+
+- `403` if the user is already logged in
+- `400` if username or password is not in correct format format or missing in the req
+- `401` if the user login credentials are invalid
+
+## `DELETE /api/users/session` - Sign out user
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if user is not logged in
+
+## `PATCH /api/users` - Update a user's password
+
+**Body**
+
+- `password` *{string}* - The user's password
+
+**Returns**
+
+- A success message
+- An object with the update user details (without password)
+
+**Throws**
+
+- `403` if the user is not logged in
+- `400` if password is in the wrong format
 
 ## `GET /api/freets` - Get all freets
 
@@ -83,68 +147,6 @@ Renders the `index.html` file that will be used to interact with the backend
 - `403` if the user is not logged in
 - `404` if the freetId is invalid
 - `400` if the topic is not valid
-
-## `POST /api/users/session` - Sign in user
-
-**Body**
-
-- `username` *{string}* - The user's username
-- `password` *{string}* - The user's password
-
-**Returns**
-
-- A success message
-- An object with user's details (without password)
-
-**Throws**
-
-- `403` if the user is already logged in
-- `400` if username or password is not in correct format format or missing in the req
-- `401` if the user login credentials are invalid
-
-## `DELETE /api/users/session` - Sign out user
-
-**Returns**
-
-- A success message
-
-**Throws**
-
-- `403` if user is not logged in
-
-## `POST /api/users` - Create an new user account
-
-**Body**
-
-- `username` *{string}* - The user's username
-- `password` *{string}* - The user's password
-
-**Returns**
-
-- A success message
-- An object with the created user's details (without password)
-
-**Throws**
-
-- `403` if there is a user already logged in
-- `400` if username or password is in the wrong format
-- `409` if username is already in use
-
-## `PATCH /api/users` - Update a user's password
-
-**Body**
-
-- `password` *{string}* - The user's password
-
-**Returns**
-
-- A success message
-- An object with the update user details (without password)
-
-**Throws**
-
-- `403` if the user is not logged in
-- `400` if password is in the wrong format
 
 ## `POST /api/follows` - Follow a user
 
@@ -228,6 +230,17 @@ Renders the `index.html` file that will be used to interact with the backend
 - `400` if name is incorrect format
 - `409` if logged in user already has a Private Circle with name
 
+## `DELETE /api/privatecircles/:privateCircle?` - Delete an existing Private Circle
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if the user is not logged in
+- `404` If the logged in user doesn’t have a Private Circle with the given name
+
 ## `GET /api/privatecircles` - Get logged in user’s Private Circles
 
 **Returns**
@@ -243,17 +256,6 @@ Renders the `index.html` file that will be used to interact with the backend
 **Returns**
 
 - The requested private circle
-
-**Throws**
-
-- `403` if the user is not logged in
-- `404` If the logged in user doesn’t have a Private Circle with the given name
-
-## `DELETE /api/privatecircles/:privateCircle?` - Delete an existing Private Circle
-
-**Returns**
-
-- A success message
 
 **Throws**
 
