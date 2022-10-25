@@ -18,7 +18,7 @@ const isValidCreatePrivateCircle = async (req: Request, res: Response, next: Nex
       }
     const privateCircle = await PrivateCircleCollection.findPrivateCircleByOwnerAndName(userId, name);
     if (privateCircle) {
-        res.status(400).json({
+        res.status(409).json({
             error: {
                 privateCircleExists: `Private Circle with name ${name} already exists.`
             }
@@ -73,7 +73,7 @@ const isValidCreatePrivateCircle = async (req: Request, res: Response, next: Nex
     const user = await UserCollection.findOneByUserId(userId);
     const follow = await FollowCollection.findOneFollowByUsernames(req.body.username, user.username)
     if (!follow) {
-        res.status(400).json({
+        res.status(403).json({
             error: {
                 mustFollowYou: `People in your Private Circle must follow you.`
             }

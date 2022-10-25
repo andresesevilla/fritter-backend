@@ -71,7 +71,7 @@ router.get(
  *
  */
 router.get(
-  '/:privateCircle',
+  '/:privateCircle?',
   [
     userValidator.isUserLoggedIn,
   ],
@@ -114,7 +114,7 @@ router.delete(
     const name = req.params.privateCircle;
     await PrivateCircleCollection.deletePrivateCircleByOwnerAndName(user, name);
     res.status(200).json({
-      message: "Private Circle Deleted"
+      message: "Your Private Circle was deleted successfully."
     });
   }
 );
@@ -140,7 +140,7 @@ router.delete(
     const username = req.body.username;
     const result = await PrivateCircleCollection.updatePrivateCircle(user, name, username);
     res.status(200).json({
-      message: "Private Circle Updated",
+      message: "Your Private Circle was updated successfully.",
       privateCircle: util.constructPrivateCircleResponse(result)
     });
   }

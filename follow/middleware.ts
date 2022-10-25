@@ -18,21 +18,21 @@ const isValidFollow = async (req: Request, res: Response, next: NextFunction) =>
     // Cannot follow yourself
     const follower = await UserCollection.findOneByUserId(req.session.userId);
     if (followeeUsername === follower.username) {
-        res.status(400).json({ error: 'You cannot follow yourself' });
+        res.status(403).json({ error: 'You cannot follow yourself' });
         return;
     }
 
     // Must be an existing user
     const followee = await UserCollection.findOneByUsername(followeeUsername);
     if (!followee) {
-        res.status(400).json({ error: 'Must be a valid username to follow' });
+        res.status(404).json({ error: 'Must be a valid username to follow' });
         return;
     }
 
     // Cannot be someone you already follow
     const follow = await FollowCollection.findOneFollowByUsernames(follower.username, followee.username)
     if (follow) {
-        res.status(400).json({ error: 'Cannot be someone you already follow' });
+        res.status(403).json({ error: 'Cannot be someone you already follow' });
         return;
     }
 
@@ -54,7 +54,7 @@ const isValidUnfollow = async (req: Request, res: Response, next: NextFunction) 
     // Must be an existing user
     const followee = await UserCollection.findOneByUsername(followeeUsername);
     if (!followee) {
-        res.status(400).json({ error: 'Must be a valid username to unfollow' });
+        res.status(404).json({ error: 'Must be a valid username to unfollow' });
         return;
     }
 
@@ -71,7 +71,7 @@ const isValidFollowLookup = async (req: Request, res: Response, next: NextFuncti
     if (followeeUsername) {
         const followee = await UserCollection.findOneByUsername(followeeUsername);
         if (!followee) {
-            res.status(400).json({ error: 'Must be a valid followee' });
+            res.status(404).json({ error: 'Must be a valid followee' });
             return;
         }
     }
@@ -81,7 +81,7 @@ const isValidFollowLookup = async (req: Request, res: Response, next: NextFuncti
     if (followerUsername) {
         const follower = await UserCollection.findOneByUsername(followerUsername);
         if (!follower) {
-            res.status(400).json({ error: 'Must be a valid follower' });
+            res.status(404).json({ error: 'Must be a valid follower' });
             return;
         }
     }

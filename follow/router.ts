@@ -41,7 +41,7 @@ router.post(
  * @return {FollowResponse} - The deleted follow
  * @throws {403} - If the user is not logged in
  */
- router.delete(
+router.delete(
   '/:username?',
   [
     userValidator.isUserLoggedIn,
@@ -50,16 +50,10 @@ router.post(
   async (req: Request, res: Response) => {
     const follower = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
     const followee = await UserCollection.findOneByUsername(req.params.username);
-
-    if (FollowCollection.deleteOne(follower, followee.id)) {
-      res.status(201).json({
-        message: 'Your follow was deleted successfully',
-      });
-    } else {
-      res.status(400).json({
-        message: 'Your follow was not deleted',
-      });
-    }
+    await FollowCollection.deleteOne(follower, followee.id);
+    res.status(201).json({
+      message: 'Your follow was deleted successfully.',
+    });
   }
 );
 
@@ -83,7 +77,7 @@ router.get(
     if (req.query.followerUsername && req.query.followeeUsername) {
       const follow = await FollowCollection.findOneFollowByUsernames(req.query.followerUsername as string, req.query.followeeUsername as string);
       if (!follow) {
-        res.status(200).json({
+        res.status(204).json({
           message: 'This follow does not exist',
         });
       } else {
@@ -101,7 +95,7 @@ router.get(
     } else {
       res.status(400).json({
         error: {
-          password: 'You may not request follows without a specific follower or followee'
+          password: 'You may not request follows without a specific follower and/or followee'
         }
       });
     }

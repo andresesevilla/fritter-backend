@@ -1,7 +1,6 @@
 import type { NextFunction, Request, Response } from 'express';
 import express from 'express';
 import * as userValidator from '../user/middleware';
-import * as anxietyShieldValidator from './middleware';
 import * as freetValidator from '../freet/middleware';
 import * as util from './util';
 import AnxietyShieldCollection from './collection';
@@ -50,9 +49,10 @@ router.patch(
     async (req: Request, res: Response) => {
         const user = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
         const topic = req.body.topic;
-        await AnxietyShieldCollection.updateAnxietyShield(user, topic)
+        const result = await AnxietyShieldCollection.updateAnxietyShield(user, topic)
         res.status(200).json({
-          message: `Updated your Anxiety Topics to toggle ${topic}.`
+          message: `Successfully updated your Anxiety Shield.`,
+          anxietyShield: util.constructAnxietyShieldResponse(result)
         });
     }
 );
