@@ -78,7 +78,7 @@ router.get(
       const follow = await FollowCollection.findOneFollowByUsernames(req.query.followerUsername as string, req.query.followeeUsername as string);
       if (!follow) {
         res.status(204).json({
-          message: 'This follow does not exist',
+          message: 'This follow does not exist.',
         });
       } else {
         const response = util.constructFollowResponse(follow);
@@ -95,7 +95,7 @@ router.get(
     } else {
       res.status(400).json({
         error: {
-          password: 'You may not request follows without a specific follower and/or followee'
+          usernameNeeded: 'You may not request follows without a specific follower and/or followee.'
         }
       });
     }

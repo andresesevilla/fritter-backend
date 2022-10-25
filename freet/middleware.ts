@@ -72,7 +72,7 @@ const isValidAnxietyReport = async (req: Request, res: Response, next: NextFunct
   ]
   if (!valid_report_reasons.includes(topic)) {
     res.status(400).json({
-      error: 'Anxiety Report topic must be one of the predefined options.'
+      error: `Topic must be one of the predefined options: ${valid_report_reasons}.`
     });
     return;
   }
