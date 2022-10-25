@@ -290,7 +290,7 @@ Renders the `index.html` file that will be used to interact with the backend
 
 - `403` if the user is not logged in
 
-## `PATCH /api/anxietyshield` - Add a topic to user’s Anxiety Shield
+## `PATCH /api/anxietyshield` - Add a topic to logged in user’s Anxiety Shield
 
 **Body**
 

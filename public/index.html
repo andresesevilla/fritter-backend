@@ -2,7 +2,7 @@
 
 <head>
   <title>Fritter</title>
-  <meta name="author" content="6.170 Staff">
+  <meta name="author" content="Andres Sevilla">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/stylesheets/style.css">
   <script src="/scripts/freet.js"></script>
@@ -71,8 +71,8 @@
         </form>
 
         <form id="view-freets-feed">
-          <h3>View Feed (freets from your following)</h3>
-          <input type="submit" value="View Freets Feed">
+          <h3>View Freets Feed (all freets from users you follow)</h3>
+          <input type="submit" value="View Feed">
         </form>
 
         <form id="view-freets-by-author">
@@ -100,7 +100,7 @@
         <form id="delete-freet">
           <h3>Delete Freet</h3>
           <div>
-            <label for="id">ID:</label>
+            <label for="id">Freet ID:</label>
             <input id="id" name="id">
           </div>
           <input type="submit" value="Delete Freet">
@@ -152,7 +152,7 @@
             <label for="followee_username">Username of followee:</label>
             <input id="followee_username" name="followee_username">
           </div>
-          <input type="submit" value="View Follow By Usernames">
+          <input type="submit" value="View Follow By Follower and Followee">
         </form>
 
         <form id="view-follows-by-follower">
@@ -219,12 +219,12 @@
         </form>
 
         <form id="view-anxiety-shield-status">
-          <h3>View Your Anxiety Shield Settings</h3>
-          <input type="submit" value="View Anxiety Shield Settings">
+          <h3>View Your Anxiety Shield</h3>
+          <input type="submit" value="View Anxiety Shield">
         </form>
 
         <form id="toggle-personal-anxiety-topic">
-          <h3>Toggle Shielding of an Anxiety Inducing Topic</h3>
+          <h3>Toggle Shielding of a Topic</h3>
           <div>
             <label for="topic">Topic:</label>
             <select name="topic" id="topic">
@@ -234,7 +234,7 @@
               <option value="other_anxiety">Other Anxiety</option>
             </select>
           </div>
-          <input type="submit" value="Toggle Personal Anxiety Topic">
+          <input type="submit" value="Toggle Shielding of Topic">
         </form>
 
       </div>
